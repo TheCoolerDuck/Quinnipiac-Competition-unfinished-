@@ -10,11 +10,13 @@ public class Source {
 
 		Window win = new Window();
 		
+		Panel panel = new Panel(Color.white, Color.green, Color.darkGray);
+		win.add(panel);
+		/**
 		TextUIEntity textA = new TextUIEntity("Wassup Peter?", new Font("Arial", Font.PLAIN, 25), 100, 20);
-		
+				
 		int speedX = 5;
 		int speedY = 5;
-		
 		
 		while (win.isActive())
 		{
@@ -36,6 +38,8 @@ public class Source {
 			win.repaint();
 			Thread.sleep(1000 / 50);
 		}
+		
+		**/
 	}
 	
     public static Color getRandomColor() {
@@ -46,4 +50,7 @@ public class Source {
         return new Color(r, g, b);
     }
 
+    
+    
+    
 }
