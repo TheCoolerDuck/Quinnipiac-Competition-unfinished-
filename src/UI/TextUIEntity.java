@@ -1,61 +1,98 @@
 package UI;
 
-import java.awt.Font;
-
 import javax.swing.JLabel;
 
+/**
+ * A UIEntity implementation backed by a JLabel.
+ *
+ * Positioning is center-based logically, but Swing uses
+ * top-left corner coordinates. This class handles the
+ * coordinate translation internally.
+ */
 public class TextUIEntity extends JLabel implements UIEntity {
-	
-	
-	public TextUIEntity(String text)
-	{
-		this(text, new Font("Arial", Font.PLAIN, 10), 0, 0);
-	}
-	
-	public TextUIEntity(String text, Font font)
-	{
-		this(text, font, 0, 0);
-	}
-	
-	public TextUIEntity(String text, int locX, int locY)
-	{
-		this(text, new Font("Arial", Font.PLAIN, 10), locX, locY);
-	}
-	
-	public TextUIEntity(String text, Font font, int locX, int locY)
-	{	
-		super(text);
-		setFont(font);
-		
-		SetLocX(locX);
-		SetLocY(locY);
-		
-		Window.main.add(this);
-	}
 
-	public int GetWidth() {
-		return getPreferredSize().width;
-	}
+    /**
+     * Constructs a text UI element and registers it
+     * with the main window panel and entity list.
+     *
+     * @param text The label text.
+     */
+    public TextUIEntity(String text) {
+        super(text);
 
-	public int GetHeight() {
-		return getPreferredSize().height;
-	}
-	
-	//Location ajusted for central positioning
-	public int GetLocX() {
-		return getLocation().x + (GetWidth() / 2);
-	}
+        Window.main.panel.add(this);
+        Window.main.panel.entities.add(this);
+    }
 
-	public int GetLocY() {
-		return getLocation().y + (GetHeight() / 2);
-	}
+    /* =========================
+       Dimension Accessors
+       ========================= */
 
-	public void SetLocX(int x) {
-		setBounds(x - (GetWidth() / 2), GetLocY() - (GetHeight() / 2), GetWidth(), GetHeight());
-	}
+    /** 
+     * Returns the preferred width of the label.
+     * Uses preferred size to avoid zero-width issues
+     * before layout pass.
+     */
+    @Override
+    public int GetWidth() {
+        return getPreferredSize().width;
+    }
 
-	public void SetLocY(int y) {
-		setBounds(GetLocX() - (GetWidth() / 2), y - (GetHeight() / 2), GetWidth(), GetHeight());
-	}
+    /** 
+     * Returns the preferred height of the label.
+     */
+    @Override
+    public int GetHeight() {
+        return getPreferredSize().height;
+    }
 
+    /* =========================
+       Center-Based Positioning
+       ========================= */
+
+    /**
+     * Returns the logical center X coordinate.
+     * Converts Swing's top-left X into center-based X.
+     */
+    @Override
+    public int GetLocX() {
+        return getX() + (GetWidth() / 2);
+    }
+
+    /**
+     * Returns the logical center Y coordinate.
+     * Converts Swing's top-left Y into center-based Y.
+     */
+    @Override
+    public int GetLocY() {
+        return getY() + (GetHeight() / 2);
+    }
+
+    /**
+     * Sets the logical center X coordinate.
+     * Translates center-based X into top-left bounds.
+     */
+    @Override
+    public void SetLocX(int x) {
+        setBounds(
+            x - (GetWidth() / 2),
+            GetLocY() - (GetHeight() / 2),
+            GetWidth(),
+            GetHeight()
+        );
+    }
+
+    /**
+     * Sets the logical center Y coordinate.
+     * Translates center-based Y into top-left bounds.
+     */
+    @Override
+    public void SetLocY(int y) {
+        setBounds(
+            GetLocX() - (GetWidth() / 2),
+            y - (GetHeight() / 2),
+            GetWidth(),
+            GetHeight()
+        );
+    }
 }

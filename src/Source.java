@@ -1,6 +1,5 @@
-import java.awt.Color;
+
 import java.awt.Font;
-import java.util.Random;
 
 import UI.*;
 
@@ -8,42 +7,32 @@ public class Source {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		Window win = new Window();
+		new Window();
 		
+<<<<<<< Updated upstream
 		TextUIEntity textA = new TextUIEntity("Wassup Peter?", new Font("Arial", Font.PLAIN, 25), 100, 20);
+=======
+		TextUIEntity title = new TextUIEntity("[Insert Name Here]");
+		title.setFont(new Font("Arial", Font.PLAIN, 25));
+		title.SetLocY(150);
+		 
+		TextUIEntity idk1 = new TextUIEntity("hello world");
+		idk1.setFont(new Font("Arial", Font.PLAIN, 15));
+		idk1.MoveToBottomOf(title, 10);
+>>>>>>> Stashed changes
 		
-		int speedX = 5;
-		int speedY = 5;
+		ButtonUIEntity button1 = new ButtonUIEntity("Click Me :)");
+		button1.SetLocY(idk1.GetLocY());
+		button1.MoveToRightOf(idk1, 10);
 		
+		UIEntityGroup group = new UIEntityGroup();
+		group.entities.add(title);
+		group.entities.add(idk1);
+		group.entities.add(button1);
 		
-		while (win.isActive())
-		{
-			if (textA.GetLocX() + (textA.GetWidth() / 2) > win.getContentPane().getWidth() || textA.GetLocX() < textA.GetWidth() / 2)
-			{
-				speedX *= -1;
-				textA.setForeground(getRandomColor());
-			}
-			
-			if (textA.GetLocY() + (textA.GetHeight() / 2) > win.getContentPane().getHeight() || textA.GetLocY() < textA.GetHeight() / 2)
-			{
-				speedY *= -1;
-				textA.setForeground(getRandomColor());
-			}
-			
-			textA.SetLocX(textA.GetLocX() + speedX);
-			textA.SetLocY(textA.GetLocY() + speedY);
-			
-			win.repaint();
-			Thread.sleep(1000 / 50);
-		}
+		group.CenterX();
+		
+		Window.main.repaint();
 	}
-	
-    public static Color getRandomColor() {
-        Random rand = new Random();
-        int r = rand.nextInt(256); // Red component (0-255)
-        int g = rand.nextInt(256); // Green component (0-255)
-        int b = rand.nextInt(256); // Blue component (0-255)
-        return new Color(r, g, b);
-    }
 
 }
