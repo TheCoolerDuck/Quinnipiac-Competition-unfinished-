@@ -10,7 +10,7 @@ public class Source {
 
 		Window win = new Window();
 		
-		TextUIEntity textA = new TextUIEntity("Hello Ayoni :)", new Font("Arial", Font.PLAIN, 25), 100, 20);
+		TextUIEntity textA = new TextUIEntity("Wassup Peter?", new Font("Arial", Font.PLAIN, 25), 100, 20);
 		
 		int speedX = 5;
 		int speedY = 5;
