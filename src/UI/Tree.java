@@ -7,20 +7,16 @@ import java.awt.Graphics;
 public class Tree {
 
 	private Color leaves, trunk;
-	private int xRect, yRect, length, width;
-	private int[] xCoords;
-	private int[] yCoords;
+	private int xRect, yRect, width, len;
 	
 	public Tree(Color l, Color t) {
 		super();
 		leaves = l;
 		trunk = t;
-		xRect = 180;
-		yRect = 530-200;
-		length = 40;
-		width = 120;
-		xCoords = new int[3];
-		yCoords = new int[3];
+		xRect = 80;
+		yRect = 70;
+		width = 40;
+		len = 220;
 	}
 
 	public Color getLeaves() {
@@ -56,64 +52,68 @@ public class Tree {
 	}
 
 	public int getLength() {
-		return length;
-	}
-
-	public void setLength(int length) {
-		this.length = length;
-	}
-
-	public int getWidth() {
 		return width;
 	}
 
+	public void setLength(int length) {
+		this.width = length;
+	}
+
+	public int getWidth() {
+		return len;
+	}
+
 	public void setWidth(int width) {
-		this.width = width;
-	}
-
-	public int[] getxCoords() {
-		return xCoords;
-	}
-
-	public void setxCoords(int i) {
-		xCoords[0] = i - 50;
-		xCoords[1] = i;
-		xCoords[2] = i + 50;
-	}
-
-	public int[] getyCoords() {
-		return yCoords;
-	}
-
-	public void setyCoords(int i) {
-		yCoords[0] = i + 100;
-		yCoords[1] = i;
-		yCoords[2] = i + 100;
+		this.len = width;
 	}
 	
 	public void drawTree(Graphics g) {
+		//drawing out the trunk
 		g.setColor(trunk);
-		g.fillRect(xRect, yRect, length, width);
+		g.fillRect(xRect, yRect, width, len);
+		yRect += len;
+		len = width;
+		width = 200;
+		g.fillRect(xRect, yRect, width, len);
+		
+		/*xRect = 270;
+		yRect = 60;
+		length = 40;
+		width = 320;*/
+		
+		
+		//drawing out the leaves
 		g.setColor(leaves);
-		g.fillPolygon(xCoords, yCoords, 3);
-
-		xCoords = new int[] { 130, 200, 270 };
-		yCoords = new int[] { 410-200, 310-200, 410-200 };
-		g.fillPolygon(xCoords, yCoords, 3);
-
-		xCoords = new int[] { 110, 200, 290 };
-		yCoords = new int[] { 450-200, 350-200, 450-200 };
-		g.fillPolygon(xCoords, yCoords, 3);
-
-		xCoords = new int[] { 90, 200, 310 };
-		yCoords = new int[] { 490-200, 390-200, 490-200 };
-		g.fillPolygon(xCoords, yCoords, 3);
-
-		xCoords = new int[] { 90 - 20, 200, 310 + 20 };
-		yCoords = new int[] { 530-200, 430-200, 530-200 };
-		g.fillPolygon(xCoords, yCoords, 3);
+		int x = 10;
+		int y = 100;
+		int w = 100;
+		drawLeaves(g, leaves, x, y, w);
+		
+		x = 200;
+		y = 50;
+		drawLeaves(g, leaves, x, y, w);
+		
+		x = 400;
+		y = 100;
+		drawLeaves(g, leaves, x, y, w);
+		
 	}
 	
-	
+	public void drawLeaves(Graphics g, Color l, int x, int y, int w) {
+		g.setColor(l);
+		g.fillOval(x, y, w, w);
+		x+=20;
+		y-=50;
+		g.fillOval(x, y, w, w);
+		x+=50;
+		y+=40;
+		g.fillOval(x, y, w, w);
+		x-=10;
+		y+=40;
+		g.fillOval(x, y, w, w);
+		x-=40;
+		y+=15;
+		g.fillOval(x, y, w, w);
+	}
 	
 }

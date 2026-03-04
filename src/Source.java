@@ -7,7 +7,7 @@ import UI.*;
 public class Source {
 
 	public static void main(String[] args) throws InterruptedException {
-
+		
 		Window win = new Window();
 		
 		Panel panel = new Panel(Color.white, Color.green, Color.darkGray);
