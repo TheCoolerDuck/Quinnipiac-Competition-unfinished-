@@ -1,98 +1,123 @@
 package UI;
 
-import javax.swing.JButton;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 
-/**
- * A UIEntity implementation backed by a JButton.
- *
- * Logical positioning is center-based, while Swing
- * internally uses top-left coordinates. This class
- * performs the required coordinate translation.
- */
-public class ButtonUIEntity extends JButton implements UIEntity {
 
-    /**
-     * Constructs a button UI entity and registers it
-     * with the main window panel and entity list.
-     *
-     * @param text The button label text.
-     */
-    public ButtonUIEntity(String text) {
-        super(text);
+public class ButtonUIEntity extends UIEntity {
 
-        Window.main.panel.add(this);
-        Window.main.panel.entities.add(this);
+    public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+		Window.main.repaint();
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
+		Window.main.repaint();
+	}
+	
+    public Color getTextColor() {
+		return colorText;
+	}
+
+	public void setTextColor(Color color) {
+		this.colorText = color;
+		Window.main.repaint();
+	}
+	
+    public Color getBackColor() {
+		return colorBack;
+	}
+
+	public void setBackColor(Color color) {
+		this.colorBack = color;
+		Window.main.repaint();
+	}
+
+	private String text = "";
+    private Font font = null;
+    private FontMetrics fontMetrics = null;
+	private Color colorText = Color.black;
+	private Color colorBack = new Color(255,253,208);
+    
+    public int X = 0;
+    public int Y = 0;
+    
+    
+    public ButtonUIEntity() {
+        super();
+        this.setFont(new Font("Arial", Font.PLAIN, 10));
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g)
+    {	
+    	g.setFont(font);
+    	g.setColor(colorBack);
+    	g.fillRect(0, 0, getWidth(), getHeight());
+    	g.setColor(colorText);
+    	g.drawString(text, 0, fontMetrics.getAscent());
+    	
+    	super.paintComponent(g);
+    }
+    
+    protected void OnClick(MouseEvent e) 
+    {
+    	this.setText("Click Me :)");
+    }
+    
+    protected void OnHoverEnter(MouseEvent e) 
+    {
+    	this.setText("Click Me :0");
+    }
+    protected void OnHoverExit(MouseEvent e) 
+    {
+    	this.setText("Click Me :(");
     }
 
-    /* =========================
-       Dimension Accessors
-       ========================= */
-
-    /**
-     * Returns the preferred width of the button.
-     * Uses preferred size to ensure correct sizing
-     * before layout resolution.
-     */
     @Override
-    public int GetWidth() {
-        return getPreferredSize().width;
+    public int getWidth() {
+    	if (fontMetrics == null)
+    		return 0;
+    	return fontMetrics.stringWidth(text);
     }
 
-    /**
-     * Returns the preferred height of the button.
-     */
     @Override
-    public int GetHeight() {
-        return getPreferredSize().height;
+    public int getHeight() {
+    	if (fontMetrics == null)
+    		return 0;
+    	return fontMetrics.getHeight();
     }
 
-    /* =========================
-       Center-Based Positioning
-       ========================= */
-
-    /**
-     * Returns the logical center X coordinate.
-     * Converts Swing's top-left X into center-based X.
-     */
     @Override
-    public int GetLocX() {
-        return getX() + (GetWidth() / 2);
+    public int getX() {
+    	return X;
     }
 
-    /**
-     * Returns the logical center Y coordinate.
-     * Converts Swing's top-left Y into center-based Y.
-     */
     @Override
-    public int GetLocY() {
-        return getY() + (GetHeight() / 2);
+    public int getY() {
+    	return Y;
     }
 
-    /**
-     * Sets the logical center X coordinate.
-     * Translates center-based X into top-left bounds.
-     */
     @Override
-    public void SetLocX(int x) {
-        setBounds(
-            x - (GetWidth() / 2),
-            GetLocY() - (GetHeight() / 2),
-            GetWidth(),
-            GetHeight()
-        );
+    public void setX(int x) {
+    	X = x;
     }
 
-    /**
-     * Sets the logical center Y coordinate.
-     * Translates center-based Y into top-left bounds.
-     */
     @Override
-    public void SetLocY(int y) {
-        setBounds(
-            GetLocX() - (GetWidth() / 2),
-            y - (GetHeight() / 2),
-            GetWidth(),
-            GetHeight()
-        );
+    public void setY(int y) {
+    	Y = y;
     }
 }

@@ -2,6 +2,7 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import BackEnd.*;
 
 public class Window extends JFrame {
 	/**
@@ -32,6 +33,10 @@ public class Window extends JFrame {
 		panel = new Panel();
 		panel.setLayout(null);
 		this.add(panel);
+		
+		Mouse mouse = new Mouse();
+		panel.addMouseListener(mouse);
+		panel.addMouseMotionListener(mouse);
 	}
 
 }

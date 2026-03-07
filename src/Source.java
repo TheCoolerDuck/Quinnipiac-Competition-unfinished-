@@ -1,6 +1,7 @@
 
 import java.awt.Font;
 
+import BackEnd.Mouse;
 import UI.*;
 
 public class Source {
@@ -8,22 +9,23 @@ public class Source {
 	public static void main(String[] args) throws InterruptedException {
 
 		new Window();
-		
-<<<<<<< Updated upstream
-		TextUIEntity textA = new TextUIEntity("Wassup Peter?", new Font("Arial", Font.PLAIN, 25), 100, 20);
-=======
-		TextUIEntity title = new TextUIEntity("[Insert Name Here]");
+
+		TextUIEntity title = new TextUIEntity();
+		title.setText("[Insert Name Here]");
 		title.setFont(new Font("Arial", Font.PLAIN, 25));
-		title.SetLocY(150);
+		title.setY(150);
 		 
-		TextUIEntity idk1 = new TextUIEntity("hello world");
+		TextUIEntity idk1 = new TextUIEntity();
+		idk1.setText("hello world");
 		idk1.setFont(new Font("Arial", Font.PLAIN, 15));
+		idk1.AlignXWith(title);
 		idk1.MoveToBottomOf(title, 10);
->>>>>>> Stashed changes
 		
-		ButtonUIEntity button1 = new ButtonUIEntity("Click Me :)");
-		button1.SetLocY(idk1.GetLocY());
-		button1.MoveToRightOf(idk1, 10);
+		ButtonUIEntity button1 = new ButtonUIEntity();
+		button1.setText("Click Me :(");
+		button1.setFont(new Font("Arial", Font.PLAIN, 30));
+		button1.AlignXWith(title);
+		button1.MoveToBottomOf(idk1, 10);
 		
 		UIEntityGroup group = new UIEntityGroup();
 		group.entities.add(title);
@@ -32,7 +34,15 @@ public class Source {
 		
 		group.CenterX();
 		
-		Window.main.repaint();
+		while (Window.main.isActive())
+		{
+		
+			UIEntity.Update();
+			
+			Window.main.repaint();
+			
+			Thread.sleep(1000 / 25);
+		}
 	}
 
 }

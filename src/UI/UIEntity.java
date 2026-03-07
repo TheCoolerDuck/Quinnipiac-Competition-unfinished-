@@ -1,188 +1,196 @@
 package UI;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 
-/**
- * Represents a rectangular UI element positioned using center-based coordinates.
- *
- * The logical position (LocX, LocY) refers to the center of the entity.
- * Width and height define the bounding rectangle around that center.
- *
- * Provides convenience methods for alignment, relative positioning,
- * and optional debug-bound rendering.
- */
-public interface UIEntity {
+import javax.swing.*;
 
-    /** Enables or disables debug bound rendering. */
+public abstract class UIEntity extends JComponent {
+	
     public boolean debug = true;
+	
+	private static ArrayList<UIEntity> entities = new ArrayList<UIEntity>();
+	
+	private boolean lastHoverState = false;
+	
+	public UIEntity()
+	{
+		Window.main.panel.add(this);
+		entities.add(this);
+	}
+	
 
-    /* =========================
-       Core Dimension Accessors
-       ========================= */
+	//<<Getters/Setters
 
-    /** @return The width of the UI entity in pixels. */
-    public abstract int GetWidth();
+    public abstract int getWidth();
 
-    /** @return The height of the UI entity in pixels. */
-    public abstract int GetHeight();
+    public abstract int getHeight();
 
+    public abstract int getX();
 
-    /* =========================
-       Center-Based Positioning
-       ========================= */
+    public abstract int getY();
 
-    /** @return The X coordinate of the entity's center. */
-    public abstract int GetLocX();
+    public abstract void setX(int x);
 
-    /** @return The Y coordinate of the entity's center. */
-    public abstract int GetLocY();
+    public abstract void setY(int y);
 
-    /** Sets the X coordinate of the entity's center. */
-    public abstract void SetLocX(int x);
-
-    /** Sets the Y coordinate of the entity's center. */
-    public abstract void SetLocY(int y);
-
-
-    /* =========================
-       Boundary Calculations
-       ========================= */
-
-    /** @return The right-most X coordinate of the entity. */
-    public default int GetMaxX() {
-        return GetLocX() + GetWidth() / 2;
+    public int getMaxX() {
+        return getX() + getWidth();
     }
 
-    /** @return The bottom-most Y coordinate of the entity. */
-    public default int GetMaxY() {
-        return GetLocY() + GetHeight() / 2;
+    public int getMaxY() {
+        return getY() + getHeight();
     }
 
-    /** @return The left-most X coordinate of the entity. */
-    public default int GetMinX() {
-        return GetLocX() - GetWidth() / 2;
+    public int getMinX() {
+        return getX();
     }
 
-    /** @return The top-most Y coordinate of the entity. */
-    public default int GetMinY() {
-        return GetLocY() - GetHeight() / 2;
+    public int getMinY() {
+        return getY();
     }
+    
+    public int getCentralX()
+    {
+    	return getX() + getWidth() / 2;
+    }
+    
+    public int getCentralY()
+    {
+    	return getY() + getHeight() / 2;
+    }
+    
+    public void setCentralX(int cx)
+    {
+    	setX(cx - getWidth() / 2);
+    }
+    
+    public void setCentralY(int cy)
+    {
+    	setY(cy - getHeight() / 2);
+    }
+    
+    //>>
+    
+    //<<Managment Methods
+    public static void Update()
+    {
+    	for (UIEntity entity : entities)
+    	{
+    		entity.setBounds(entity.getMinX(), entity.getMinY(), entity.getWidth(), entity.getHeight());
+    		
+    		if (entity.lastHoverState)
+    			entity.OnHoverActive();
+    	}
+    }
+    
+    public static void OnScreenClick(MouseEvent e)
+    {
+    	for (UIEntity entity : entities)
+    		if (entity.getBounds().contains(e.getPoint()))
+    			entity.OnClick(e);
+    }
+    
+    public static void OnMouseMove(MouseEvent e)
+    {
+    	for (UIEntity entity : entities)
+    	{
+    		if (entity.getBounds().contains(e.getPoint()))
+    		{
+    			if (!entity.lastHoverState)
+    				entity.OnHoverEnter(e);
+    			
+    			entity.lastHoverState = true;
+    		}
+    		else
+    		{
+    			if (!entity.lastHoverState)
+    				entity.OnHoverExit(e);
+    			
+    			entity.lastHoverState = false;
+    		}
+    	}
+    }
+    
+    //>>
+    
+    //<<Behavoir
 
-
-    /* =========================
-       Debug Rendering
-       ========================= */
-
-    /**
-     * Draws a red bounding rectangle around the entity.
-     * Only renders if the debug flag is enabled.
-     */
-    public default void DrawDebugBounds(Graphics2D g2) {
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+    	super.paintComponent(g);
         if (!debug)
             return;
+        
+        Graphics2D g2 = (Graphics2D)g;
 
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.red);
-        g2.drawRect(GetMinX(), GetMinY(), GetWidth(), GetHeight());
+        g2.drawRect(0, 0, getWidth(), getHeight());
+    }
+    
+    protected void OnClick(MouseEvent e) {}
+    protected void OnHoverEnter(MouseEvent e) {}
+    protected void OnHoverExit(MouseEvent e) {}
+    protected void OnHoverActive() {}
+    
+    //>>
+    
+    //<<Positioning
+
+    public void CenterX() {
+        setCentralX(Window.main.getContentPane().getWidth() / 2);
     }
 
-
-    /* =========================
-       Screen Centering Helpers
-       ========================= */
-
-    /** Horizontally centers this entity within the main window. */
-    public default void CenterX() {
-        SetLocX(Window.main.getContentPane().getWidth() / 2);
+    public void CenterY() {
+        setCentralY(Window.main.getContentPane().getHeight() / 2);
+    }
+    
+    public void AlignXWith(UIEntity other)
+    {
+    	setCentralX(other.getCentralX());
+    }
+    
+    public void AlignYWith(UIEntity other)
+    {
+    	setCentralY(other.getCentralY());
     }
 
-    /** Vertically centers this entity within the main window. */
-    public default void CenterY() {
-        SetLocY(Window.main.getContentPane().getHeight() / 2);
-    }
-
-
-    /* =========================
-       Relative Positioning
-       ========================= */
-
-    /** Positions this entity directly to the left of another. */
-    public default void MoveToLeftOf(UIEntity other) {
+    public void MoveToLeftOf(UIEntity other) {
         MoveToLeftOf(other, 0);
     }
 
-    /**
-     * Positions this entity to the left of another with optional spacing.
-     *
-     * @param other The reference entity.
-     * @param separation Additional horizontal spacing in pixels.
-     */
-    public default void MoveToLeftOf(UIEntity other, int separation) {
-        int newX = other.GetLocX()
-                - (other.GetWidth() / 2)
-                - (this.GetWidth() / 2)
-                - separation;
-
-        this.SetLocX(newX);
+    public void MoveToLeftOf(UIEntity other, int separation) {
+        this.setX(other.getMaxX() + separation);
     }
 
-    /** Positions this entity directly to the right of another. */
-    public default void MoveToRightOf(UIEntity other) {
+    public void MoveToRightOf(UIEntity other) {
         MoveToRightOf(other, 0);
     }
 
-    /**
-     * Positions this entity to the right of another with optional spacing.
-     *
-     * @param other The reference entity.
-     * @param separation Additional horizontal spacing in pixels.
-     */
-    public default void MoveToRightOf(UIEntity other, int separation) {
-        int newX = other.GetLocX()
-                + (other.GetWidth() / 2)
-                + (this.GetWidth() / 2)
-                + separation;
-
-        this.SetLocX(newX);
+    public void MoveToRightOf(UIEntity other, int separation) {
+        this.setX(other.getX() - separation - this.getWidth());
     }
 
-    /** Positions this entity directly above another. */
-    public default void MoveToTopOf(UIEntity other) {
+    public void MoveToTopOf(UIEntity other) {
         MoveToTopOf(other, 0);
     }
 
-    /**
-     * Positions this entity above another with optional spacing.
-     *
-     * @param other The reference entity.
-     * @param separation Additional vertical spacing in pixels.
-     */
-    public default void MoveToTopOf(UIEntity other, int separation) {
-        int newY = other.GetLocY()
-                - (other.GetHeight() / 2)
-                - (this.GetHeight() / 2)
-                - separation;
-
-        this.SetLocY(newY);
+    public void MoveToTopOf(UIEntity other, int separation) {
+        this.setY(other.getMinY() + separation + getHeight());
     }
 
-    /** Positions this entity directly below another. */
-    public default void MoveToBottomOf(UIEntity other) {
+    public void MoveToBottomOf(UIEntity other) {
         MoveToBottomOf(other, 0);
     }
 
-    /**
-     * Positions this entity below another with optional spacing.
-     *
-     * @param other The reference entity.
-     * @param separation Additional vertical spacing in pixels.
-     */
-    public default void MoveToBottomOf(UIEntity other, int separation) {
-        int newY = other.GetLocY()
-                + (other.GetHeight() / 2)
-                + (this.GetHeight() / 2)
-                + separation;
-
-        this.SetLocY(newY);
+    public void MoveToBottomOf(UIEntity other, int separation) {
+        this.setY(other.getMaxY() + separation);
     }
+    
+    //>>
+    
+    
 }

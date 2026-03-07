@@ -1,98 +1,99 @@
 package UI;
 
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
+
 import javax.swing.JLabel;
 
-/**
- * A UIEntity implementation backed by a JLabel.
- *
- * Positioning is center-based logically, but Swing uses
- * top-left corner coordinates. This class handles the
- * coordinate translation internally.
- */
-public class TextUIEntity extends JLabel implements UIEntity {
+public class TextUIEntity extends UIEntity {
 
-    /**
-     * Constructs a text UI element and registers it
-     * with the main window panel and entity list.
-     *
-     * @param text The label text.
-     */
-    public TextUIEntity(String text) {
-        super(text);
+    public String getText() {
+		return text;
+	}
 
-        Window.main.panel.add(this);
-        Window.main.panel.entities.add(this);
+	public void setText(String text) {
+		this.text = text;
+		Window.main.repaint();
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
+		Window.main.repaint();
+	}
+	
+    public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+		Window.main.repaint();
+	}
+
+	private String text = "";
+    private Font font = null;
+    private FontMetrics fontMetrics = null;
+	private Color color = Color.black;
+    
+    public int X = 0;
+    public int Y = 0;
+    
+    
+    public TextUIEntity() {
+        super();
+        this.setFont(new Font("Arial", Font.PLAIN, 10));
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+    	super.paintComponent(g);
+    	
+    	g.setFont(font);
+    	g.setColor(color);
+    	g.drawString(text, 0, fontMetrics.getAscent());
+    }
+    
+
+    @Override
+    public int getWidth() {
+    	if (fontMetrics == null)
+    		return 0;
+    	return fontMetrics.stringWidth(text);
     }
 
-    /* =========================
-       Dimension Accessors
-       ========================= */
-
-    /** 
-     * Returns the preferred width of the label.
-     * Uses preferred size to avoid zero-width issues
-     * before layout pass.
-     */
     @Override
-    public int GetWidth() {
-        return getPreferredSize().width;
+    public int getHeight() {
+    	if (fontMetrics == null)
+    		return 0;
+    	return fontMetrics.getHeight();
     }
 
-    /** 
-     * Returns the preferred height of the label.
-     */
     @Override
-    public int GetHeight() {
-        return getPreferredSize().height;
+    public int getX() {
+    	return X;
     }
 
-    /* =========================
-       Center-Based Positioning
-       ========================= */
-
-    /**
-     * Returns the logical center X coordinate.
-     * Converts Swing's top-left X into center-based X.
-     */
     @Override
-    public int GetLocX() {
-        return getX() + (GetWidth() / 2);
+    public int getY() {
+    	return Y;
     }
 
-    /**
-     * Returns the logical center Y coordinate.
-     * Converts Swing's top-left Y into center-based Y.
-     */
     @Override
-    public int GetLocY() {
-        return getY() + (GetHeight() / 2);
+    public void setX(int x) {
+    	X = x;
     }
 
-    /**
-     * Sets the logical center X coordinate.
-     * Translates center-based X into top-left bounds.
-     */
     @Override
-    public void SetLocX(int x) {
-        setBounds(
-            x - (GetWidth() / 2),
-            GetLocY() - (GetHeight() / 2),
-            GetWidth(),
-            GetHeight()
-        );
-    }
-
-    /**
-     * Sets the logical center Y coordinate.
-     * Translates center-based Y into top-left bounds.
-     */
-    @Override
-    public void SetLocY(int y) {
-        setBounds(
-            GetLocX() - (GetWidth() / 2),
-            y - (GetHeight() / 2),
-            GetWidth(),
-            GetHeight()
-        );
+    public void setY(int y) {
+    	Y = y;
     }
 }
