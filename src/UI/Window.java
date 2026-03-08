@@ -2,10 +2,16 @@ package UI;
 
 import javax.swing.*;
 import java.awt.*;
+import BackEnd.*;
 
 public class Window extends JFrame {
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	public static Window main = null;
+	
+	public Panel panel;
 	
 	public Window()
 	{
@@ -23,6 +29,14 @@ public class Window extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		setVisible(true);
+		
+		panel = new Panel();
+		panel.setLayout(null);
+		this.add(panel);
+		
+		Mouse mouse = new Mouse();
+		panel.addMouseListener(mouse);
+		panel.addMouseMotionListener(mouse);
 	}
 
 }

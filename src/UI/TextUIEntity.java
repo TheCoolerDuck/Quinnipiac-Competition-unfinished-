@@ -1,61 +1,99 @@
 package UI;
 
+import java.awt.Color;
 import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.event.MouseEvent;
 
 import javax.swing.JLabel;
 
-public class TextUIEntity extends JLabel implements UIEntity {
-	
-	
-	public TextUIEntity(String text)
-	{
-		this(text, new Font("Arial", Font.PLAIN, 10), 0, 0);
-	}
-	
-	public TextUIEntity(String text, Font font)
-	{
-		this(text, font, 0, 0);
-	}
-	
-	public TextUIEntity(String text, int locX, int locY)
-	{
-		this(text, new Font("Arial", Font.PLAIN, 10), locX, locY);
-	}
-	
-	public TextUIEntity(String text, Font font, int locX, int locY)
-	{	
-		super(text);
-		setFont(font);
-		
-		SetLocX(locX);
-		SetLocY(locY);
-		
-		Window.main.add(this);
+public class TextUIEntity extends UIEntity {
+
+    public String getText() {
+		return text;
 	}
 
-	public int GetWidth() {
-		return getPreferredSize().width;
+	public void setText(String text) {
+		this.text = text;
+		Window.main.repaint();
 	}
 
-	public int GetHeight() {
-		return getPreferredSize().height;
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
+		Window.main.repaint();
 	}
 	
-	//Location ajusted for central positioning
-	public int GetLocX() {
-		return getLocation().x + (GetWidth() / 2);
+    public Color getColor() {
+		return color;
 	}
 
-	public int GetLocY() {
-		return getLocation().y + (GetHeight() / 2);
+	public void setColor(Color color) {
+		this.color = color;
+		Window.main.repaint();
 	}
 
-	public void SetLocX(int x) {
-		setBounds(x - (GetWidth() / 2), GetLocY() - (GetHeight() / 2), GetWidth(), GetHeight());
-	}
+	private String text = "";
+    private Font font = null;
+    private FontMetrics fontMetrics = null;
+	private Color color = Color.black;
+    
+    public int X = 0;
+    public int Y = 0;
+    
+    
+    public TextUIEntity() {
+        super();
+        this.setFont(new Font("Arial", Font.PLAIN, 10));
+    }
+    
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+    	super.paintComponent(g);
+    	
+    	g.setFont(font);
+    	g.setColor(color);
+    	g.drawString(text, 0, fontMetrics.getAscent());
+    }
+    
 
-	public void SetLocY(int y) {
-		setBounds(GetLocX() - (GetWidth() / 2), y - (GetHeight() / 2), GetWidth(), GetHeight());
-	}
+    @Override
+    public int getWidth() {
+    	if (fontMetrics == null)
+    		return 0;
+    	return fontMetrics.stringWidth(text);
+    }
 
+    @Override
+    public int getHeight() {
+    	if (fontMetrics == null)
+    		return 0;
+    	return fontMetrics.getHeight();
+    }
+
+    @Override
+    public int getX() {
+    	return X;
+    }
+
+    @Override
+    public int getY() {
+    	return Y;
+    }
+
+    @Override
+    public void setX(int x) {
+    	X = x;
+    }
+
+    @Override
+    public void setY(int y) {
+    	Y = y;
+    }
 }

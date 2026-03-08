@@ -1,49 +1,48 @@
-import java.awt.Color;
-import java.awt.Font;
-import java.util.Random;
 
+import java.awt.Font;
+
+import BackEnd.Mouse;
 import UI.*;
 
 public class Source {
 
 	public static void main(String[] args) throws InterruptedException {
 
-		Window win = new Window();
+		new Window();
+
+		TextUIEntity title = new TextUIEntity();
+		title.setText("[Insert Name Here]");
+		title.setFont(new Font("Arial", Font.PLAIN, 25));
+		title.setY(150);
+		 
+		TextUIEntity idk1 = new TextUIEntity();
+		idk1.setText("hello world");
+		idk1.setFont(new Font("Arial", Font.PLAIN, 15));
+		idk1.AlignXWith(title);
+		idk1.MoveToBottomOf(title, 10);
 		
-		TextUIEntity textA = new TextUIEntity("Hello Ayoni :)", new Font("Arial", Font.PLAIN, 25), 100, 20);
+		ButtonUIEntity button1 = new ButtonUIEntity();
+		button1.setText("Click Me :(");
+		button1.setFont(new Font("Arial", Font.PLAIN, 30));
+		button1.AlignXWith(title);
+		button1.MoveToBottomOf(idk1, 10);
 		
-		int speedX = 5;
-		int speedY = 5;
+		UIEntityGroup group = new UIEntityGroup();
+		group.entities.add(title);
+		group.entities.add(idk1);
+		group.entities.add(button1);
 		
+		group.CenterX();
 		
-		while (win.isActive())
+		while (Window.main.isActive())
 		{
-			if (textA.GetLocX() + (textA.GetWidth() / 2) > win.getContentPane().getWidth() || textA.GetLocX() < textA.GetWidth() / 2)
-			{
-				speedX *= -1;
-				textA.setForeground(getRandomColor());
-			}
+		
+			UIEntity.Update();
 			
-			if (textA.GetLocY() + (textA.GetHeight() / 2) > win.getContentPane().getHeight() || textA.GetLocY() < textA.GetHeight() / 2)
-			{
-				speedY *= -1;
-				textA.setForeground(getRandomColor());
-			}
+			Window.main.repaint();
 			
-			textA.SetLocX(textA.GetLocX() + speedX);
-			textA.SetLocY(textA.GetLocY() + speedY);
-			
-			win.repaint();
-			Thread.sleep(1000 / 50);
+			Thread.sleep(1000 / 25);
 		}
 	}
-	
-    public static Color getRandomColor() {
-        Random rand = new Random();
-        int r = rand.nextInt(256); // Red component (0-255)
-        int g = rand.nextInt(256); // Green component (0-255)
-        int b = rand.nextInt(256); // Blue component (0-255)
-        return new Color(r, g, b);
-    }
 
 }
