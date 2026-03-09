@@ -1,14 +1,72 @@
 package UI;
 
+import java.awt.Color;
+import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class UIEntityGroup extends UIEntity {
+	
+	public boolean debug = false;
 
     public ArrayList<UIEntity> entities = new ArrayList<>();
 
     public UIEntityGroup() {
         super();
+        
     }
+    
+    @Override
+    protected void paintComponent(Graphics g)
+    {
+    	super.paintComponent(g);
+        if (!debug)
+            return;
+        
+        
+        
+        g.setColor(Color.green);
+        g.fillOval(getCenterOfMassX() - getX() - 5, getCenterOfMassY() - getY() - 5, 10, 10);
+    }
+    
+    public int getCenterOfMassX()
+    {
+    	int totalMass = 0;
+    	int runningCenter = 0;
+    	
+        for (UIEntity entity : entities) 
+        {
+        	totalMass += entity.getWidth() * entity.getHeight();
+        	runningCenter += entity.getCentralX() * entity.getWidth() * entity.getHeight();
+        }
+        
+        return runningCenter / totalMass;
+    }
+    
+    public int getCenterOfMassY()
+    {
+    	int totalMass = 0;
+    	int runningCenter = 0;
+    	
+        for (UIEntity entity : entities) 
+        {
+        	totalMass += entity.getWidth() * entity.getHeight();
+        	runningCenter += entity.getCentralY() * entity.getWidth() * entity.getHeight();
+        }
+        
+        return runningCenter / totalMass;
+    }
+    
+    public void setCenterOfMassX(int x)
+    {
+    	setX(x + (getX() - getCenterOfMassX()));
+    }
+    
+    public void setCenterOfMassY(int y)
+    {
+    	setY(y + (getY() - getCenterOfMassY()));
+    }
+    
+    //<<Getters/Setters
 
     @Override
     public int getWidth() {
@@ -67,6 +125,9 @@ public class UIEntityGroup extends UIEntity {
         int max = entities.get(0).getMaxX();
 
         for (UIEntity entity : entities) {
+        	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        		continue;
+        	
             if (entity.getMinX() < min)
                 min = entity.getMinX();
             if (entity.getMaxX() > max)
@@ -80,6 +141,9 @@ public class UIEntityGroup extends UIEntity {
         int max = entities.get(0).getMaxY();
 
         for (UIEntity entity : entities) {
+        	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        		continue;
+        	
             if (entity.getMinY() < min)
                 min = entity.getMinY();
             if (entity.getMaxY() > max)
@@ -87,4 +151,12 @@ public class UIEntityGroup extends UIEntity {
         }
         return new int[]{min, max};
     }
+    
+    //>>
+
+	@Override
+	protected void OnDispose() {
+		entities.clear();
+		entities = null;
+	}
 }

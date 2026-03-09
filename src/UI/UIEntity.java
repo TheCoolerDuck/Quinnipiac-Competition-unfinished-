@@ -79,9 +79,7 @@ public abstract class UIEntity extends JComponent {
     	for (UIEntity entity : entities)
     	{
     		entity.setBounds(entity.getMinX(), entity.getMinY(), entity.getWidth(), entity.getHeight());
-    		
-    		if (entity.lastHoverState)
-    			entity.OnHoverActive();
+    		entity.OnUpdate();
     	}
     }
     
@@ -90,6 +88,20 @@ public abstract class UIEntity extends JComponent {
     	for (UIEntity entity : entities)
     		if (entity.getBounds().contains(e.getPoint()))
     			entity.OnClick(e);
+    }
+    
+    public static void OnMouseDown(MouseEvent e)
+    {
+    	for (UIEntity entity : entities)
+    		if (entity.getBounds().contains(e.getPoint()))
+    			entity.OnMouseDownOnThis(e);;
+    }
+    
+    public static void OnMouseUp(MouseEvent e)
+    {
+    	for (UIEntity entity : entities)
+    		if (entity.getBounds().contains(e.getPoint()))
+    			entity.OnMouseUpOnThis(e);;
     }
     
     public static void OnMouseMove(MouseEvent e)
@@ -132,9 +144,13 @@ public abstract class UIEntity extends JComponent {
     }
     
     protected void OnClick(MouseEvent e) {}
+    protected void OnMouseDownOnThis(MouseEvent e) {}
+    protected void OnMouseUpOnThis(MouseEvent e) {}
     protected void OnHoverEnter(MouseEvent e) {}
     protected void OnHoverExit(MouseEvent e) {}
-    protected void OnHoverActive() {}
+    protected void OnUpdate() {}
+    
+    protected abstract void OnDispose();
     
     //>>
     
