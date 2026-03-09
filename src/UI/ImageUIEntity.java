@@ -14,6 +14,14 @@ public class ImageUIEntity extends UIEntity{
 	public int X = 0;
 	public int Y = 0;
 	
+	public double getScale() {
+		return scale;
+	}
+
+	public void setScale(double scale) {
+		this.scale = scale;
+	}
+
 	public double scale = 1;
 
 	public ImageUIEntity(String imagePath) {

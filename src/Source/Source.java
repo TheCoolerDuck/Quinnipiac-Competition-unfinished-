@@ -29,7 +29,7 @@ public class Source {
 		idk1.MoveToBottomOf(title, 10);
 		
 		ButtonUIEntity button1 = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
-		button1.scale = 0.75;
+		button1.scale = 0;
 		button1.AlignXWith(title);
 		button1.MoveToBottomOf(idk1, 10);
 
@@ -42,7 +42,13 @@ public class Source {
 		group.setX(-200);
 		group.setY(-200);
 		
-		Animator animator = new Animator(group, Window.main.getWidth() / 2, 150, 0.5, 0.75);
+
+		Animator animatorX = new Animator(x -> group.setCentralX((int)x), group.getCentralX());
+		Animator animatorY = new Animator(y -> group.setCentralY((int)y), group.getCentralY());
+		Animator animatorS = new Animator(s -> button1.setScale(s), button1.getScale());
+		animatorX.setGoal(Window.main.getWidth() / 2);
+		animatorY.setGoal(150);
+		animatorS.setGoal(1);
 		
 		long lastTime = System.currentTimeMillis();
 		
@@ -58,8 +64,11 @@ public class Source {
 			
 			UIEntity.Update();
 			
-			animator.Update();
-
+			animatorX.Update();
+			animatorY.Update();
+			animatorS.Update();
+			
+			button1.AlignXWith(title);
 			
 			Window.main.repaint();
 			
