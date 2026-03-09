@@ -13,6 +13,8 @@ public class ButtonUIEntity extends ImageUIEntity {
 	private BufferedImage idleImage;
 	private BufferedImage hoverImage;
 	private BufferedImage clickedImage;
+	
+	public Runnable onClick = null;
     
     public ButtonUIEntity(String idleImagePath, String hoverImagePath, String clickedImagePath) {
     	
@@ -56,6 +58,10 @@ public class ButtonUIEntity extends ImageUIEntity {
     protected void OnHoverExit(MouseEvent e) 
     {
     	this.setImage(idleImage);
+    }
+    protected void OnClick(MouseEvent e) 
+    {
+    	onClick.run();
     }
     
 	@Override

@@ -1,10 +1,7 @@
 package Source;
 
 import java.awt.Font;
-import java.awt.event.MouseMotionListener;
-
 import Animation.Animator;
-import BackEnd.Mouse;
 import UI.*;
 
 
@@ -33,22 +30,29 @@ public class Source {
 		button1.AlignXWith(title);
 		button1.MoveToBottomOf(idk1, 10);
 
-		
 		UIEntityGroup group = new UIEntityGroup();
 		group.entities.add(title);
 		group.entities.add(idk1);
-		group.entities.add(button1);
-		
+		group.entities.add(button1);	
 		group.setX(-200);
 		group.setY(-200);
 		
-
-		Animator animatorX = new Animator(x -> group.setCentralX((int)x), group.getCentralX());
-		Animator animatorY = new Animator(y -> group.setCentralY((int)y), group.getCentralY());
-		Animator animatorS = new Animator(s -> button1.setScale(s), button1.getScale());
+		
+		
+		Animator animatorX = new Animator(x -> group.setCentralX((int)x), () -> group.getCentralX());
+		Animator animatorY = new Animator(y -> group.setCentralY((int)y), () -> group.getCentralY());
+		Animator animatorS = new Animator(s -> button1.setScale(s), () -> button1.getScale());
 		animatorX.setGoal(Window.main.getWidth() / 2);
 		animatorY.setGoal(150);
 		animatorS.setGoal(1);
+		
+		animatorX.active = true;
+		animatorY.active = true;
+		animatorS.active = true;
+		
+		button1.onClick = () -> {
+			animatorS.setGoal(-0.1);
+			};
 		
 		long lastTime = System.currentTimeMillis();
 		
@@ -64,15 +68,11 @@ public class Source {
 			
 			UIEntity.Update();
 			
-			animatorX.Update();
-			animatorY.Update();
-			animatorS.Update();
+			Animator.UpdateAll();
 			
 			button1.AlignXWith(title);
 			
 			Window.main.repaint();
-			
-
 		}
 	}
 

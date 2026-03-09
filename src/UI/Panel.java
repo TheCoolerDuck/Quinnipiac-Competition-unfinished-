@@ -2,13 +2,11 @@ package UI;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.text.DefaultHighlighter;
-
 
 
 public class Panel extends JPanel {
 	
-	public boolean debug = true;
+	public boolean debug = false;
 	
 	@Override
 	protected void paintComponent(Graphics g)

@@ -68,6 +68,9 @@ public class UIEntityGroup extends UIEntity {
         int max = entities.get(0).getMaxX();
 
         for (UIEntity entity : entities) {
+        	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        		continue;
+        	
             if (entity.getMinX() < min)
                 min = entity.getMinX();
             if (entity.getMaxX() > max)
@@ -81,6 +84,9 @@ public class UIEntityGroup extends UIEntity {
         int max = entities.get(0).getMaxY();
 
         for (UIEntity entity : entities) {
+        	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        		continue;
+        	
             if (entity.getMinY() < min)
                 min = entity.getMinY();
             if (entity.getMaxY() > max)
