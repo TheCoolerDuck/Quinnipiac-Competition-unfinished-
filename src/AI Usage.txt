@@ -1,3 +1,3 @@
 - Library recomendations 
-- Java/Library questions
+- Java syntax/tecnicality questions
 - Doccumentation

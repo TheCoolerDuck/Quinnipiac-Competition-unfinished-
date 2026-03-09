@@ -1,42 +1,8 @@
 package UI;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
-import java.awt.event.MouseEvent;
-
-import javax.swing.JLabel;
+import java.awt.*;
 
 public class TextUIEntity extends UIEntity {
-
-    public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-		Window.main.repaint();
-	}
-
-	public Font getFont() {
-		return font;
-	}
-
-	public void setFont(Font font) {
-		this.font = font;
-		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
-		Window.main.repaint();
-	}
-	
-    public Color getColor() {
-		return color;
-	}
-
-	public void setColor(Color color) {
-		this.color = color;
-		Window.main.repaint();
-	}
 
 	private String text = "";
     private Font font = null;
@@ -62,6 +28,7 @@ public class TextUIEntity extends UIEntity {
     	g.drawString(text, 0, fontMetrics.getAscent());
     }
     
+    //<<Getters/Setters
 
     @Override
     public int getWidth() {
@@ -96,4 +63,41 @@ public class TextUIEntity extends UIEntity {
     public void setY(int y) {
     	Y = y;
     }
+    
+    public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+		Window.main.repaint();
+	}
+
+	public Font getFont() {
+		return font;
+	}
+
+	public void setFont(Font font) {
+		this.font = font;
+		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
+		Window.main.repaint();
+	}
+	
+    public Color getColor() {
+		return color;
+	}
+
+	public void setColor(Color color) {
+		this.color = color;
+		Window.main.repaint();
+	}
+	//>>
+
+	@Override
+	protected void OnDispose() {
+		text = null;
+		font = null;
+		fontMetrics = null;
+		color = null;
+	}
 }

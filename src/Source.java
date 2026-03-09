@@ -1,7 +1,5 @@
 
 import java.awt.Font;
-
-import BackEnd.Mouse;
 import UI.*;
 
 public class Source {
@@ -21,11 +19,11 @@ public class Source {
 		idk1.AlignXWith(title);
 		idk1.MoveToBottomOf(title, 10);
 		
-		ButtonUIEntity button1 = new ButtonUIEntity();
-		button1.setText("Click Me :(");
-		button1.setFont(new Font("Arial", Font.PLAIN, 30));
+		ButtonUIEntity button1 = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+		button1.scale = 0.75;
 		button1.AlignXWith(title);
 		button1.MoveToBottomOf(idk1, 10);
+
 		
 		UIEntityGroup group = new UIEntityGroup();
 		group.entities.add(title);

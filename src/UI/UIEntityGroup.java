@@ -9,6 +9,7 @@ public class UIEntityGroup extends UIEntity {
     public UIEntityGroup() {
         super();
     }
+    //<<Getters/Setters
 
     @Override
     public int getWidth() {
@@ -87,4 +88,12 @@ public class UIEntityGroup extends UIEntity {
         }
         return new int[]{min, max};
     }
+    
+    //>>
+
+	@Override
+	protected void OnDispose() {
+		entities.clear();
+		entities = null;
+	}
 }

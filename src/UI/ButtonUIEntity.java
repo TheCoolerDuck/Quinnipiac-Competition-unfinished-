@@ -1,123 +1,68 @@
 package UI;
 
-import java.awt.Color;
-import java.awt.Font;
-import java.awt.FontMetrics;
-import java.awt.Graphics;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
 
 
-public class ButtonUIEntity extends UIEntity {
-
-    public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
-		Window.main.repaint();
-	}
-
-	public Font getFont() {
-		return font;
-	}
-
-	public void setFont(Font font) {
-		this.font = font;
-		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
-		Window.main.repaint();
-	}
+public class ButtonUIEntity extends ImageUIEntity {
 	
-    public Color getTextColor() {
-		return colorText;
-	}
-
-	public void setTextColor(Color color) {
-		this.colorText = color;
-		Window.main.repaint();
-	}
-	
-    public Color getBackColor() {
-		return colorBack;
-	}
-
-	public void setBackColor(Color color) {
-		this.colorBack = color;
-		Window.main.repaint();
-	}
-
-	private String text = "";
-    private Font font = null;
-    private FontMetrics fontMetrics = null;
-	private Color colorText = Color.black;
-	private Color colorBack = new Color(255,253,208);
+	private BufferedImage idleImage;
+	private BufferedImage hoverImage;
+	private BufferedImage clickedImage;
     
-    public int X = 0;
-    public int Y = 0;
-    
-    
-    public ButtonUIEntity() {
-        super();
-        this.setFont(new Font("Arial", Font.PLAIN, 10));
-    }
-    
-    @Override
-    protected void paintComponent(Graphics g)
-    {	
-    	g.setFont(font);
-    	g.setColor(colorBack);
-    	g.fillRect(0, 0, getWidth(), getHeight());
-    	g.setColor(colorText);
-    	g.drawString(text, 0, fontMetrics.getAscent());
+    public ButtonUIEntity(String idleImagePath, String hoverImagePath, String clickedImagePath) {
     	
-    	super.paintComponent(g);
+        super();
+    	
+		try {
+			idleImage = ImageIO.read(new File(idleImagePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			hoverImage = ImageIO.read(new File(hoverImagePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		try {
+			clickedImage = ImageIO.read(new File(clickedImagePath));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		
+		this.setImage(idleImage);
+    	
+
     }
     
-    protected void OnClick(MouseEvent e) 
+    protected void OnMouseDownOnThis(MouseEvent e) 
     {
-    	this.setText("Click Me :)");
+    	this.setImage(clickedImage);
     }
-    
+    protected void OnMouseUpOnThis(MouseEvent e) 
+    {
+    	this.setImage(hoverImage);
+    }   
     protected void OnHoverEnter(MouseEvent e) 
     {
-    	this.setText("Click Me :0");
+    	this.setImage(hoverImage);
     }
     protected void OnHoverExit(MouseEvent e) 
     {
-    	this.setText("Click Me :(");
+    	this.setImage(idleImage);
     }
+    
+	@Override
+	protected void OnDispose() {
+		idleImage = null;
+		hoverImage = null;
+		clickedImage = null;
+	}
 
-    @Override
-    public int getWidth() {
-    	if (fontMetrics == null)
-    		return 0;
-    	return fontMetrics.stringWidth(text);
-    }
-
-    @Override
-    public int getHeight() {
-    	if (fontMetrics == null)
-    		return 0;
-    	return fontMetrics.getHeight();
-    }
-
-    @Override
-    public int getX() {
-    	return X;
-    }
-
-    @Override
-    public int getY() {
-    	return Y;
-    }
-
-    @Override
-    public void setX(int x) {
-    	X = x;
-    }
-
-    @Override
-    public void setY(int y) {
-    	Y = y;
-    }
 }
