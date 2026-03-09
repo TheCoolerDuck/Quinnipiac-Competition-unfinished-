@@ -37,11 +37,27 @@ public class Source {
 		group.setX(-200);
 		group.setY(-200);
 		
+		Lock lock1 = new Lock("src/Assets/UI/DevArtE.png");
+		Key key1 = new Key("src/Assets/UI/DevArtD.png", lock1);
+		
+		key1.setX(500);
+		key1.setY(500);
+		key1.setGoalX(500);
+		key1.setGoalY(500);
+		
+		lock1.CenterX();
+		lock1.CenterY();
+		
+		lock1.scale = 0.75;
+		key1.scale = 0.5;
+		
+		Window.main.panel.setComponentZOrder(key1, 0);
 		
 		
-		Animator animatorX = new Animator(x -> group.setCentralX((int)x), () -> group.getCentralX());
-		Animator animatorY = new Animator(y -> group.setCentralY((int)y), () -> group.getCentralY());
+		Animator animatorX = new Animator(x -> group.setCenterOfMassX((int)x), () -> group.getCenterOfMassX());
+		Animator animatorY = new Animator(y -> group.setCenterOfMassY((int)y), () -> group.getCenterOfMassY());
 		Animator animatorS = new Animator(s -> button1.setScale(s), () -> button1.getScale());
+		
 		animatorX.setGoal(Window.main.getWidth() / 2);
 		animatorY.setGoal(150);
 		animatorS.setGoal(1);

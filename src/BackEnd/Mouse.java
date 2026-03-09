@@ -15,10 +15,14 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	public static int getY() {
 		return y;
 	}
+	public static boolean isDown()
+	{
+		return isDown;
+	}
 
 	private static int x = 0;
 	private static int y = 0;
-	
+	private static boolean isDown;
 	
 
 	@Override
@@ -29,11 +33,13 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		UIEntity.OnMouseDown(e);
+		isDown = true;
 	}
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
 		UIEntity.OnMouseUp(e);
+		isDown = false;
 	}
 
 	@Override
@@ -50,8 +56,9 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseDragged(MouseEvent e) {
-		// TODO Auto-generated method stub
-		
+		UIEntity.OnMouseMove(e);
+		x = e.getX();
+		y = e.getY();
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import java.util.function.DoubleSupplier;
 
 public class Animator {
 	
-	public boolean active;
+	public boolean active = true;
 	
 	private double v = 0;	
 	private double goal = 0;

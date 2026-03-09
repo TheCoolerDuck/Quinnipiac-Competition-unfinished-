@@ -79,9 +79,7 @@ public abstract class UIEntity extends JComponent {
     	for (UIEntity entity : entities)
     	{
     		entity.setBounds(entity.getMinX(), entity.getMinY(), entity.getWidth(), entity.getHeight());
-    		
-    		if (entity.lastHoverState)
-    			entity.OnHoverActive();
+    		entity.OnUpdate();
     	}
     }
     
@@ -150,7 +148,7 @@ public abstract class UIEntity extends JComponent {
     protected void OnMouseUpOnThis(MouseEvent e) {}
     protected void OnHoverEnter(MouseEvent e) {}
     protected void OnHoverExit(MouseEvent e) {}
-    protected void OnHoverActive() {}
+    protected void OnUpdate() {}
     
     protected abstract void OnDispose();
     
