@@ -1,8 +1,17 @@
+package Source;
 
 import java.awt.Font;
+import java.awt.event.MouseMotionListener;
+
+import Animation.Animator;
+import BackEnd.Mouse;
 import UI.*;
 
+
 public class Source {
+	
+	public static double deltaTime = 0.01;
+	public final static int FPS = 60;
 
 	public static void main(String[] args) throws InterruptedException {
 
@@ -30,16 +39,31 @@ public class Source {
 		group.entities.add(idk1);
 		group.entities.add(button1);
 		
-		group.CenterX();
+		group.setX(-200);
+		group.setY(-200);
+		
+		Animator animator = new Animator(group, Window.main.getWidth() / 2, 150, 0.5, 0.75);
+		
+		long lastTime = System.currentTimeMillis();
 		
 		while (Window.main.isActive())
 		{
-		
+			Thread.sleep(1000 / FPS);
+			
+			long currentTime = System.currentTimeMillis();
+			
+			deltaTime = (currentTime - lastTime) / 1000.0;
+			
+			lastTime = currentTime;
+			
 			UIEntity.Update();
+			
+			animator.Update();
+
 			
 			Window.main.repaint();
 			
-			Thread.sleep(1000 / 25);
+
 		}
 	}
 

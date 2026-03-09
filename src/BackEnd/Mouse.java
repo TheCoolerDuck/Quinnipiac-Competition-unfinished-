@@ -8,6 +8,18 @@ import UI.UIEntity;
 
 public class Mouse implements MouseListener, MouseMotionListener {
 	
+	public static int getX() {
+		return x;
+	}
+
+	public static int getY() {
+		return y;
+	}
+
+	private static int x = 0;
+	private static int y = 0;
+	
+	
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -45,7 +57,8 @@ public class Mouse implements MouseListener, MouseMotionListener {
 	@Override
 	public void mouseMoved(MouseEvent e) {
 		UIEntity.OnMouseMove(e);
-		
+		x = e.getX();
+		y = e.getY();
 	}
 
 }
