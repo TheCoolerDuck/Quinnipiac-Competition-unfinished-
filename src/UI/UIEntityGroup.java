@@ -12,7 +12,6 @@ public class UIEntityGroup extends UIEntity {
 
     public UIEntityGroup() {
         super();
-        
     }
     
     @Override
@@ -22,51 +21,11 @@ public class UIEntityGroup extends UIEntity {
         if (!debug)
             return;
         
-        
-        
         g.setColor(Color.green);
         g.fillOval(getCenterOfMassX() - getX() - 5, getCenterOfMassY() - getY() - 5, 10, 10);
     }
-    
-    public int getCenterOfMassX()
-    {
-    	int totalMass = 0;
-    	int runningCenter = 0;
-    	
-        for (UIEntity entity : entities) 
-        {
-        	totalMass += entity.getWidth() * entity.getHeight();
-        	runningCenter += entity.getCentralX() * entity.getWidth() * entity.getHeight();
-        }
-        
-        return runningCenter / totalMass;
-    }
-    
-    public int getCenterOfMassY()
-    {
-    	int totalMass = 0;
-    	int runningCenter = 0;
-    	
-        for (UIEntity entity : entities) 
-        {
-        	totalMass += entity.getWidth() * entity.getHeight();
-        	runningCenter += entity.getCentralY() * entity.getWidth() * entity.getHeight();
-        }
-        
-        return runningCenter / totalMass;
-    }
-    
-    public void setCenterOfMassX(int x)
-    {
-    	setX(x + (getX() - getCenterOfMassX()));
-    }
-    
-    public void setCenterOfMassY(int y)
-    {
-    	setY(y + (getY() - getCenterOfMassY()));
-    }
-    
-    //<<Getters/Setters
+
+    //region Getters/Setters
 
     @Override
     public int getWidth() {
@@ -120,9 +79,45 @@ public class UIEntityGroup extends UIEntity {
         }
     }
 
+    public int getCenterOfMassX() {
+        int totalMass = 0;
+        int runningCenter = 0;
+
+        for (UIEntity entity : entities)
+        {
+            totalMass += entity.getWidth() * entity.getHeight();
+            runningCenter += entity.getCentralX() * entity.getWidth() * entity.getHeight();
+        }
+
+        return runningCenter / totalMass;
+    }
+
+    public int getCenterOfMassY() {
+        int totalMass = 0;
+        int runningCenter = 0;
+
+        for (UIEntity entity : entities)
+        {
+            totalMass += entity.getWidth() * entity.getHeight();
+            runningCenter += entity.getCentralY() * entity.getWidth() * entity.getHeight();
+        }
+
+        return runningCenter / totalMass;
+    }
+
+    public void setCenterOfMassX(int x)
+    {
+        setX(x + (getX() - getCenterOfMassX()));
+    }
+
+    public void setCenterOfMassY(int y)
+    {
+        setY(y + (getY() - getCenterOfMassY()));
+    }
+
     private int[] getHorizontalBounds() {
-        int min = entities.get(0).getMinX();
-        int max = entities.get(0).getMaxX();
+        int min = entities.getFirst().getMinX();
+        int max = entities.getFirst().getMaxX();
 
         for (UIEntity entity : entities) {
         	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
@@ -137,8 +132,8 @@ public class UIEntityGroup extends UIEntity {
     }
 
     private int[] getVerticalBounds() {
-        int min = entities.get(0).getMinY();
-        int max = entities.get(0).getMaxY();
+        int min = entities.getFirst().getMinY();
+        int max = entities.getFirst().getMaxY();
 
         for (UIEntity entity : entities) {
         	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
@@ -152,7 +147,7 @@ public class UIEntityGroup extends UIEntity {
         return new int[]{min, max};
     }
     
-    //>>
+    //endregion
 
 	@Override
 	protected void OnDispose() {

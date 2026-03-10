@@ -13,44 +13,21 @@ public class ButtonUIEntity extends ImageUIEntity {
 	private BufferedImage idleImage;
 	private BufferedImage hoverImage;
 	private BufferedImage clickedImage;
-	
-	public Runnable onClick = null;
     
-    public ButtonUIEntity(String idleImagePath, String hoverImagePath, String clickedImagePath) {
-    	
+    public ButtonUIEntity(String idleImagePath, String hoverImagePath, String clickedImagePath) throws IOException {
         super();
-    	
-		try {
-			idleImage = ImageIO.read(new File(idleImagePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			hoverImage = ImageIO.read(new File(hoverImagePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		
-		try {
-			clickedImage = ImageIO.read(new File(clickedImagePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+
+		idleImage = ImageIO.read(new File(idleImagePath));
+		hoverImage = ImageIO.read(new File(hoverImagePath));
+		clickedImage = ImageIO.read(new File(clickedImagePath));
 		
 		this.setImage(idleImage);
-    	
-
     }
     
     protected void OnMouseDownOnThis(MouseEvent e) 
     {
     	this.setImage(clickedImage);
-    }
-    protected void OnMouseUpOnThis(MouseEvent e) 
-    {
-    	this.setImage(hoverImage);
-    }   
+    }  
     protected void OnHoverEnter(MouseEvent e) 
     {
     	this.setImage(hoverImage);
@@ -58,10 +35,6 @@ public class ButtonUIEntity extends ImageUIEntity {
     protected void OnHoverExit(MouseEvent e) 
     {
     	this.setImage(idleImage);
-    }
-    protected void OnClick(MouseEvent e) 
-    {
-    	onClick.run();
     }
     
 	@Override

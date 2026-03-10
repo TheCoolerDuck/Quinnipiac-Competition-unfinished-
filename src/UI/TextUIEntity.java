@@ -8,27 +8,23 @@ public class TextUIEntity extends UIEntity {
     private Font font = null;
     private FontMetrics fontMetrics = null;
 	private Color color = Color.black;
-    
-    public int X = 0;
-    public int Y = 0;
-    
-    
+
     public TextUIEntity() {
         super();
-        this.setFont(new Font("Arial", Font.PLAIN, 10));
+        this.setFont(new Font("Arial", Font.PLAIN, 20 / (Window.halfScreen ? 2 : 1)));
     }
     
     @Override
     protected void paintComponent(Graphics g)
     {
     	super.paintComponent(g);
-    	
+
     	g.setFont(font);
     	g.setColor(color);
     	g.drawString(text, 0, fontMetrics.getAscent());
     }
     
-    //<<Getters/Setters
+    //region Getters/Setters
 
     @Override
     public int getWidth() {
@@ -43,55 +39,25 @@ public class TextUIEntity extends UIEntity {
     		return 0;
     	return fontMetrics.getHeight();
     }
-
-    @Override
-    public int getX() {
-    	return X;
-    }
-
-    @Override
-    public int getY() {
-    	return Y;
-    }
-
-    @Override
-    public void setX(int x) {
-    	X = x;
-    }
-
-    @Override
-    public void setY(int y) {
-    	Y = y;
-    }
     
     public String getText() {
 		return text;
 	}
 
-	public void setText(String text) {
-		this.text = text;
-		Window.main.repaint();
-	}
+	public void setText(String text) { this.text = text; }
 
 	public Font getFont() {
 		return font;
 	}
 
-	public void setFont(Font font) {
-		this.font = font;
-		this.fontMetrics = Window.main.getGraphics().getFontMetrics(font);
-		Window.main.repaint();
-	}
+	public void setFont(Font font) { this.font = font; this.fontMetrics = Window.main.getGraphics().getFontMetrics(font); }
 	
     public Color getColor() {
 		return color;
 	}
 
-	public void setColor(Color color) {
-		this.color = color;
-		Window.main.repaint();
-	}
-	//>>
+	public void setColor(Color color) { this.color = color; }
+	//endregion
 
 	@Override
 	protected void OnDispose() {

@@ -7,33 +7,49 @@ import java.util.ArrayList;
 import javax.swing.*;
 
 public abstract class UIEntity extends JComponent {
-	
+
+    private final static ArrayList<UIEntity> instances = new ArrayList<UIEntity>();
+
     public boolean debug = true;
-	
-	private static ArrayList<UIEntity> entities = new ArrayList<UIEntity>();
-	
 	private boolean lastHoverState = false;
+
+    private int X;
+    private int Y;
+
+    //region Runnables
+	public Runnable onUpdate = null;
+	public Runnable onClick = null;
+	public Runnable onMouseDownOnThis = null;
+	public Runnable onHoverEnter = null;
+	public Runnable onHoverExit = null;
+	public Runnable onDispose = null;
+	//endregion
 	
 	public UIEntity()
 	{
 		Window.main.panel.add(this);
-		entities.add(this);
+		instances.add(this);
 	}
-	
 
-	//<<Getters/Setters
+	//region Getters/Setters
+
+	/**
+	 * Sets weather this components will be rendered on top of others
+	 * @param z the render priority (less is higher priority)
+	 */
+	public void setDrawOrder(int z) { Window.main.panel.setComponentZOrder(this, z); }
 
     public abstract int getWidth();
 
     public abstract int getHeight();
 
-    public abstract int getX();
+    public int getX() { return X; }
 
-    public abstract int getY();
+    public int getY() { return Y; }
 
-    public abstract void setX(int x);
+    public void setX(int x) { X = x; }
 
-    public abstract void setY(int y);
+    public void setY(int y) { Y = y; }
 
     public int getMaxX() {
         return getX() + getWidth();
@@ -71,63 +87,81 @@ public abstract class UIEntity extends JComponent {
     	setY(cy - getHeight() / 2);
     }
     
-    //>>
-    
-    //<<Managment Methods
-    public static void Update()
+    //endregion
+
+    //region Managment Methods
+    public static void UpdateAll()
     {
-    	for (UIEntity entity : entities)
+    	for (UIEntity entity : instances)
     	{
     		entity.setBounds(entity.getMinX(), entity.getMinY(), entity.getWidth(), entity.getHeight());
-    		entity.OnUpdate();
+    		entity.Update();
+    		
+    		if (entity.onUpdate != null)
+    			entity.onUpdate.run();
     	}
     }
     
     public static void OnScreenClick(MouseEvent e)
     {
-    	for (UIEntity entity : entities)
+    	for (UIEntity entity : instances)
+    	{
     		if (entity.getBounds().contains(e.getPoint()))
+    		{
     			entity.OnClick(e);
+        		
+        		if (entity.onClick != null)
+        			entity.onClick.run();
+    		}
+    	}
     }
     
     public static void OnMouseDown(MouseEvent e)
     {
-    	for (UIEntity entity : entities)
+    	for (UIEntity entity : instances)
+    	{
     		if (entity.getBounds().contains(e.getPoint()))
-    			entity.OnMouseDownOnThis(e);;
-    }
-    
-    public static void OnMouseUp(MouseEvent e)
-    {
-    	for (UIEntity entity : entities)
-    		if (entity.getBounds().contains(e.getPoint()))
-    			entity.OnMouseUpOnThis(e);;
+    		{
+    			entity.OnMouseDownOnThis(e);
+    			
+        		if (entity.onMouseDownOnThis != null)
+        			entity.onMouseDownOnThis.run();
+    		}
+    	}
     }
     
     public static void OnMouseMove(MouseEvent e)
     {
-    	for (UIEntity entity : entities)
+    	for (UIEntity entity : instances)
     	{
     		if (entity.getBounds().contains(e.getPoint()))
     		{
     			if (!entity.lastHoverState)
+    			{
     				entity.OnHoverEnter(e);
+            		if (entity.onHoverEnter != null)
+            			entity.onHoverEnter.run();
+    			}
     			
     			entity.lastHoverState = true;
     		}
     		else
     		{
     			if (!entity.lastHoverState)
+    			{
     				entity.OnHoverExit(e);
+            		if (entity.onHoverEnter != null)
+            			entity.onHoverExit.run();
+    			}
     			
     			entity.lastHoverState = false;
     		}
     	}
     }
     
-    //>>
+    //endregion
     
-    //<<Behavoir
+    //region Behavoir
 
     @Override
     protected void paintComponent(Graphics g)
@@ -145,16 +179,15 @@ public abstract class UIEntity extends JComponent {
     
     protected void OnClick(MouseEvent e) {}
     protected void OnMouseDownOnThis(MouseEvent e) {}
-    protected void OnMouseUpOnThis(MouseEvent e) {}
     protected void OnHoverEnter(MouseEvent e) {}
     protected void OnHoverExit(MouseEvent e) {}
-    protected void OnUpdate() {}
+    protected void Update() {}
     
     protected abstract void OnDispose();
     
-    //>>
+    //endregion
     
-    //<<Positioning
+    //region Positioning
 
     public void CenterX() {
         setCentralX(Window.main.getContentPane().getWidth() / 2);
@@ -206,7 +239,5 @@ public abstract class UIEntity extends JComponent {
         this.setY(other.getMaxY() + separation);
     }
     
-    //>>
-    
-    
+    //endregion
 }

@@ -5,10 +5,8 @@ import java.awt.*;
 import BackEnd.*;
 
 public class Window extends JFrame {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
+
+	public static final boolean halfScreen = false;
 	public static Window main = null;
 	
 	public Panel panel;
@@ -21,13 +19,19 @@ public class Window extends JFrame {
 			main = this;
 		
 		Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-		
-		//setSize(screenSize);
-		setLocation(screenSize.width / 4, screenSize.height / 4);
-		setSize(screenSize.width / 2, screenSize.height / 2);
-		
+
+		if (halfScreen)
+		{
+			setLocation(screenSize.width / 4, screenSize.height / 4);
+			setSize(screenSize.width / 2, screenSize.height / 2);
+		}
+		else
+		{
+			setSize(screenSize);
+			this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+		}
+
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		
 		setVisible(true);
 		
 		panel = new Panel();
