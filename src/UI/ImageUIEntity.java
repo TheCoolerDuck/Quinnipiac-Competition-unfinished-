@@ -11,20 +11,14 @@ public class ImageUIEntity extends UIEntity{
 
 	private BufferedImage image;
 
-	public int X = 0;
-	public int Y = 0;
-	
-	public double getScale() {
-		return scale;
-	}
+	public double scaleX = 1;
+	public double scaleY = 1;
+	//so you dont have to constantly change both x and y
+	public double scaleGlobal = 1;
 
-	public void setScale(double scale) {
-		this.scale = scale;
-	}
+	//region Constructors
 
-	public double scale = 1;
-
-	public ImageUIEntity(String imagePath) {
+	public ImageUIEntity(String imagePath) throws IOException {
 		super();
 		setImage(imagePath);
 	}
@@ -38,9 +32,13 @@ public class ImageUIEntity extends UIEntity{
 		super();
 	}
 
+	//endregion
+
+	//region behavoir
+
 	@Override
 	protected void paintComponent(Graphics g)
-	{	
+	{
 		if (image != null) {
 			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
 		}
@@ -48,16 +46,35 @@ public class ImageUIEntity extends UIEntity{
 		super.paintComponent(g);
 	}
 
-	//<<Getters/Setters
-	
-	public void setImage(String imagePath)
-	{
-		try {
-			image = ImageIO.read(new File(imagePath));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+	//endregion
+
+	//region Getters/Setters
+
+	public double getScaleX() {
+		return scaleX;
 	}
+
+	public void setScaleX(double scale) {
+		this.scaleX = scale;
+	}
+
+	public double getScaleY() {
+		return scaleY;
+	}
+
+	public void setScaleY(double scale) {
+		this.scaleY = scale;
+	}
+
+	public double getScaleGlobal() {
+		return scaleGlobal;
+	}
+
+	public void setScaleGlobal(double scale) {
+		this.scaleGlobal = scale;
+	}
+	
+	public void setImage(String imagePath) throws IOException { image = ImageIO.read(new File(imagePath)); }
 	
 	public void setImage(BufferedImage image)
 	{
@@ -68,37 +85,17 @@ public class ImageUIEntity extends UIEntity{
 	public int getWidth() {
 		if (image == null)
 			return 0;
-		return (int)(image.getWidth() * scale);
+		return (int)(image.getWidth() * scaleX * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
 	}
 
 	@Override
 	public int getHeight() {
 		if (image == null)
 			return 0;
-		return (int)(image.getHeight() * scale);
-	}
-
-	@Override
-	public int getX() {
-		return X;
-	}
-
-	@Override
-	public int getY() {
-		return Y;
-	}
-
-	@Override
-	public void setX(int x) {
-		X = x;
-	}
-
-	@Override
-	public void setY(int y) {
-		Y = y;
+		return (int)(image.getHeight() * scaleY * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
 	}
 	
-	//>>
+	//endregion
 
 	@Override
 	protected void OnDispose() {

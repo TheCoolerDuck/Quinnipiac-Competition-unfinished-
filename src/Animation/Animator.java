@@ -5,10 +5,17 @@ import java.util.function.DoubleConsumer;
 import java.util.function.DoubleSupplier;
 
 public class Animator {
-	
+
+	//Video explaining this insanity: https://youtu.be/KPoeNZZ6H4s?si=2GaFefMPx0tdasUM
+
+	private static final ArrayList<Animator> instances = new ArrayList<Animator>();
+
 	public boolean active = true;
+
+	private final DoubleConsumer set;
+	private final DoubleSupplier get;
 	
-	private double v = 0;	
+	private double velocity = 0;
 	private double goal = 0;
 	
 	private double k1 = 0;
@@ -17,25 +24,30 @@ public class Animator {
 	private double naturalFrequency;
 	private double dampingCoefficient;
 
-	private DoubleConsumer set;
-	private DoubleSupplier get;
-	
-	private final double minError = 0.01;
-	
-	private static ArrayList<Animator> instances = new ArrayList<Animator>();
-	
-	//no idea how this works, just saw it in a youtube video, hope that helps :) 
-	//https://youtu.be/KPoeNZZ6H4s?si=2GaFefMPx0tdasUM
-	public Animator(DoubleConsumer set, DoubleSupplier get)
+	public Runnable onGoalReached = null;
+
+	//so onGoalReached is only called once
+	private boolean moving = true;
+
+	//used to scale minimum error in case the
+	public double minError = 0.01;
+
+	//region Constructors
+
+	public Animator(DoubleConsumer set, DoubleSupplier get) { this(set, get, 1, 1); }
+
+	public Animator(DoubleConsumer set, DoubleSupplier get, double naturalFrequency, double dampingCoefficient)
 	{
 		this.set = set;
 		this.get = get;
 
-		setNaturalFrequency(1);
-		setDampingCoefficient(0.5);
-		
+		setNaturalFrequency(naturalFrequency);
+		setDampingCoefficient(dampingCoefficient);
+
 		instances.add(this);
 	}
+
+	//endregion
 	
 	public static void UpdateAll()
 	{	
@@ -47,13 +59,28 @@ public class Animator {
 	private void Update()
 	{
 		double p = get.getAsDouble();
-		
-		p += v * Source.Source.deltaTime;
-		v += (goal - p - k1 * v) * Source.Source.deltaTime / k2;
-		
-		if (Math.abs(v / goal) > minError)
+
+		//Update
+		p += velocity * Source.Source.deltaTime;
+		velocity += (goal - p - k1 * velocity) * Source.Source.deltaTime / k2;
+
+		boolean hasVelocity = Math.abs(velocity) > minError;
+		boolean isClose = Math.abs(goal - p) > minError;
+		if (hasVelocity || isClose)
+		{
+			//set position
 			set.accept(p);
+			moving = true;
+		}
+		else if (moving)
+		{
+			moving = false;
+			if (onGoalReached != null)
+				onGoalReached.run();
+		}
 	}
+
+	//region Getters/Setters
 	
 	public double getGoal() {
 		return goal;
@@ -67,22 +94,15 @@ public class Animator {
 		return naturalFrequency;
 	}
 
-	public void setNaturalFrequency(double naturalFrequency) {
-		this.naturalFrequency = naturalFrequency;
-		
-		ReCalcK1();
-		ReCalcK2();
-	}
+	public void setNaturalFrequency(double naturalFrequency) { this.naturalFrequency = naturalFrequency; ReCalcK1(); ReCalcK2(); }
 
 	public double getDampingCoefficient() {
 		return dampingCoefficient;
 	}
 
-	public void setDampingCoefficient(double dampingCoefficient) {
-		this.dampingCoefficient = dampingCoefficient;
-		
-		ReCalcK1();
-	}
+	public void setDampingCoefficient(double dampingCoefficient) { this.dampingCoefficient = dampingCoefficient; ReCalcK1(); }
+
+	//endregion
 
 	private void ReCalcK1()
 	{

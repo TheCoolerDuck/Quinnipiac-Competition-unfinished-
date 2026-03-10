@@ -7,11 +7,16 @@ import java.awt.event.MouseMotionListener;
 import UI.UIEntity;
 
 public class Mouse implements MouseListener, MouseMotionListener {
-	
+
+	private static int x = 0;
+	private static int y = 0;
+	private static boolean isDown;
+
+	//region Getters
+
 	public static int getX() {
 		return x;
 	}
-
 	public static int getY() {
 		return y;
 	}
@@ -20,10 +25,7 @@ public class Mouse implements MouseListener, MouseMotionListener {
 		return isDown;
 	}
 
-	private static int x = 0;
-	private static int y = 0;
-	private static boolean isDown;
-	
+	//endregion
 
 	@Override
 	public void mouseClicked(MouseEvent e) {
@@ -38,7 +40,6 @@ public class Mouse implements MouseListener, MouseMotionListener {
 
 	@Override
 	public void mouseReleased(MouseEvent e) {
-		UIEntity.OnMouseUp(e);
 		isDown = false;
 	}
 
