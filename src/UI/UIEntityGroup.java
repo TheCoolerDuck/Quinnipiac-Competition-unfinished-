@@ -8,7 +8,7 @@ public class UIEntityGroup extends UIEntity {
 	
 	public boolean debug = false;
 
-    public ArrayList<UIEntity> entities = new ArrayList<>();
+    public ArrayList<UIEntity> children = new ArrayList<>();
 
     public UIEntityGroup() {
         super();
@@ -29,7 +29,7 @@ public class UIEntityGroup extends UIEntity {
 
     @Override
     public int getWidth() {
-        if (entities == null || entities.isEmpty())
+        if (children == null || children.isEmpty())
             return 0;
 
         int[] bounds = getHorizontalBounds();
@@ -38,7 +38,7 @@ public class UIEntityGroup extends UIEntity {
 
     @Override
     public int getHeight() {
-        if (entities == null || entities.isEmpty())
+        if (children == null || children.isEmpty())
             return 0;
 
         int[] bounds = getVerticalBounds();
@@ -47,7 +47,7 @@ public class UIEntityGroup extends UIEntity {
 
     @Override
     public int getX() {
-        if (entities == null || entities.isEmpty())
+        if (children == null || children.isEmpty())
             return 0;
 
         int[] bounds = getHorizontalBounds();
@@ -56,7 +56,7 @@ public class UIEntityGroup extends UIEntity {
 
     @Override
     public int getY() {
-        if (entities.isEmpty())
+        if (children.isEmpty())
             return 0;
 
         int[] bounds = getVerticalBounds();
@@ -66,7 +66,7 @@ public class UIEntityGroup extends UIEntity {
     @Override
     public void setX(int x) {
         int delta = x - getX();
-        for (UIEntity entity : entities) {
+        for (UIEntity entity : children) {
             entity.setX(entity.getX() + delta);
         }
     }
@@ -74,7 +74,7 @@ public class UIEntityGroup extends UIEntity {
     @Override
     public void setY(int y) {
         int delta = y - getY();
-        for (UIEntity entity : entities) {
+        for (UIEntity entity : children) {
             entity.setY(entity.getY() + delta);
         }
     }
@@ -83,7 +83,7 @@ public class UIEntityGroup extends UIEntity {
         int totalMass = 0;
         int runningCenter = 0;
 
-        for (UIEntity entity : entities)
+        for (UIEntity entity : children)
         {
             totalMass += entity.getWidth() * entity.getHeight();
             runningCenter += entity.getCentralX() * entity.getWidth() * entity.getHeight();
@@ -96,7 +96,7 @@ public class UIEntityGroup extends UIEntity {
         int totalMass = 0;
         int runningCenter = 0;
 
-        for (UIEntity entity : entities)
+        for (UIEntity entity : children)
         {
             totalMass += entity.getWidth() * entity.getHeight();
             runningCenter += entity.getCentralY() * entity.getWidth() * entity.getHeight();
@@ -116,10 +116,10 @@ public class UIEntityGroup extends UIEntity {
     }
 
     private int[] getHorizontalBounds() {
-        int min = entities.getFirst().getMinX();
-        int max = entities.getFirst().getMaxX();
+        int min = children.getFirst().getMinX();
+        int max = children.getFirst().getMaxX();
 
-        for (UIEntity entity : entities) {
+        for (UIEntity entity : children) {
         	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
         		continue;
         	
@@ -132,10 +132,10 @@ public class UIEntityGroup extends UIEntity {
     }
 
     private int[] getVerticalBounds() {
-        int min = entities.getFirst().getMinY();
-        int max = entities.getFirst().getMaxY();
+        int min = children.getFirst().getMinY();
+        int max = children.getFirst().getMaxY();
 
-        for (UIEntity entity : entities) {
+        for (UIEntity entity : children) {
         	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
         		continue;
         	
@@ -151,7 +151,7 @@ public class UIEntityGroup extends UIEntity {
 
 	@Override
 	protected void OnDispose() {
-		entities.clear();
-		entities = null;
+		children.clear();
+		children = null;
 	}
 }

@@ -1,5 +1,7 @@
 package UI;
 
+import BackEnd.Window;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;

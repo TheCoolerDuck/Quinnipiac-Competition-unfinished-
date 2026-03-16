@@ -1,8 +1,7 @@
-package UI;
+package BackEnd;
 
 import javax.swing.*;
 import java.awt.*;
-import BackEnd.*;
 
 public class Window extends JFrame {
 
