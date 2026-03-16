@@ -1,5 +1,6 @@
 package UI;
 
+import BackEnd.ImageManager;
 import BackEnd.Window;
 
 import java.awt.*;
@@ -11,23 +12,21 @@ import javax.imageio.ImageIO;
 
 public class ImageUIEntity extends UIEntity{
 
-	private BufferedImage image;
+	private String image;
 
 	public double scaleX = 1;
 	public double scaleY = 1;
 	//so you dont have to constantly change both x and y
 	public double scaleGlobal = 1;
 
+	public boolean flipX;
+	public boolean flipY;
+
 	//region Constructors
 
-	public ImageUIEntity(String imagePath) throws IOException {
+	public ImageUIEntity(String imageName) {
 		super();
-		setImage(imagePath);
-	}
-	
-	public ImageUIEntity(BufferedImage image) {
-		super();
-		setImage(image);
+		setImage(imageName);
 	}
 	
 	public ImageUIEntity() {
@@ -42,7 +41,11 @@ public class ImageUIEntity extends UIEntity{
 	protected void paintComponent(Graphics g)
 	{
 		if (image != null) {
-			g.drawImage(image, 0, 0, getWidth(), getHeight(), null);
+			int x = flipX ? getWidth() : 0;
+			int y = flipY ? getHeight() : 0;
+			int w = flipX ? -getWidth() : getWidth();
+			int h = flipY ? -getHeight() : getHeight();
+			g.drawImage(ImageManager.get(image), x, y, w, h, null);
 		}
 
 		super.paintComponent(g);
@@ -76,25 +79,21 @@ public class ImageUIEntity extends UIEntity{
 		this.scaleGlobal = scale;
 	}
 	
-	public void setImage(String imagePath) throws IOException { image = ImageIO.read(new File(imagePath)); }
-	
-	public void setImage(BufferedImage image)
-	{
-		this.image = image;
-	}
+	public void setImage(String imageName) { image = imageName; }
+
 
 	@Override
 	public int getWidth() {
 		if (image == null)
 			return 0;
-		return (int)(image.getWidth() * scaleX * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
+		return (int)(ImageManager.get(image).getWidth() * scaleX * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
 	}
 
 	@Override
 	public int getHeight() {
 		if (image == null)
 			return 0;
-		return (int)(image.getHeight() * scaleY * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
+		return (int)(ImageManager.get(image).getHeight() * scaleY * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
 	}
 	
 	//endregion

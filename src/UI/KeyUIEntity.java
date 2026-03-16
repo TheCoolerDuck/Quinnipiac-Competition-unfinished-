@@ -29,14 +29,8 @@ public class KeyUIEntity extends ImageUIEntity {
 	
 	public int lockDistance = 20;
 	
-	public KeyUIEntity(String imagePath, UIEntity lock) throws IOException {
-		super(imagePath);
-		this.lock = lock;
-		animatorX.debug = true;
-	}
-	
-	public KeyUIEntity(BufferedImage image, UIEntity lock) {
-		super(image);
+	public KeyUIEntity(String imageName, UIEntity lock) {
+		super(imageName);
 		this.lock = lock;
 	}
 

@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.IOException;
 
 import Animation.Animator;
+import BackEnd.ImageManager;
 import BackEnd.Window;
 import UI.*;
 
@@ -40,7 +41,9 @@ public class Source {
 
 		StackUIEntity stackA;
 
-
+		String buttonImageA = ImageManager.load("src/Assets/UI/DevArtA.png", "A");
+		String buttonImageB = ImageManager.load("src/Assets/UI/DevArtB.png", "B");
+		String buttonImageC = ImageManager.load("src/Assets/UI/DevArtC.png", "C");
 
 		{
 			textA = new TextUIEntity();
@@ -58,7 +61,7 @@ public class Source {
 		}
 
 		{
-			buttonA = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonA = new ButtonUIEntity("A", "B", "C");
 			buttonA.scaleGlobal = 0;
 			buttonA.onUpdate = () -> buttonA.AlignXWith(textA);
 			buttonA.MoveToBottomOf(textB, 10);
@@ -100,7 +103,7 @@ public class Source {
 		}
 
 		{
-			buttonB = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonB = new ButtonUIEntity("A", "B", "C");
 
 			Animator animator = new Animator(buttonB::setScaleGlobal, buttonB::getScaleGlobal);
 			animator.setGoal(1);
@@ -122,7 +125,7 @@ public class Source {
 		}
 
 		{
-			buttonC = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonC = new ButtonUIEntity("A", "B", "C");
 
 			Animator animator = new Animator(buttonC::setScaleGlobal, buttonC::getScaleGlobal);
 			animator.setGoal(1);
@@ -144,7 +147,7 @@ public class Source {
 		}
 
 		{
-			buttonD = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonD = new ButtonUIEntity("A", "B", "C");
 
 			Animator animator = new Animator(buttonD::setScaleGlobal, buttonD::getScaleGlobal);
 			animator.setGoal(1);
@@ -166,7 +169,7 @@ public class Source {
 		}
 
 		{
-			buttonE = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonE = new ButtonUIEntity("A", "B", "C");
 
 			Animator animator = new Animator(buttonE::setScaleGlobal, buttonE::getScaleGlobal);
 			animator.setGoal(1);
@@ -188,7 +191,7 @@ public class Source {
 		}
 
 		{
-			buttonF = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonF = new ButtonUIEntity("A", "B", "C");
 
 			Animator animator = new Animator(buttonF::setScaleGlobal, buttonF::getScaleGlobal);
 			animator.setGoal(1);
@@ -228,11 +231,13 @@ public class Source {
 		}
 
 		{
-			lockA = new ImageUIEntity("src/Assets/UI/DevArtE.png");
+			String lockImage = ImageManager.load("src/Assets/UI/DevArtE.png", "lock");
+			lockA = new ImageUIEntity("lock");
 		}
 
 		{
-			keyA = new KeyUIEntity("src/Assets/UI/DevArtD.png", lockA);
+			String keyImage = ImageManager.load("src/Assets/UI/DevArtD.png", "key");
+			keyA = new KeyUIEntity("key", lockA);
 			keyA.scaleGlobal = 0.75;
 			keyA.setDrawOrder(0);
 			//keyA.onLock = () ->

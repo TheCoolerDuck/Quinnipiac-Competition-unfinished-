@@ -70,10 +70,14 @@ public class Animator {
 		boolean hasVelocity = Math.abs(velocity) > minError * Source.Source.deltaTime;
 		boolean isFar = Math.abs(goal - value) > minError;
 
+		if (debug)
+			System.out.println("Goal: " + goal + "; Value: " + value + "; Velocity: " + velocity );
+
+		set.accept(value);
 		if (hasVelocity || isFar)
 		{
 			//set position
-			set.accept(value);
+
 			moving = true;
 		}
 		else if (moving)
