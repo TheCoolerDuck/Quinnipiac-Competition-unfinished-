@@ -1,5 +1,7 @@
 package UI;
 
+import BackEnd.Window;
+
 import java.awt.*;
 
 public class TextUIEntity extends UIEntity {
@@ -11,7 +13,7 @@ public class TextUIEntity extends UIEntity {
 
     public TextUIEntity() {
         super();
-        this.setFont(new Font("Arial", Font.PLAIN, 20 / (Window.halfScreen ? 2 : 1)));
+        this.setFont(new Font("Arial", Font.PLAIN, 20 / (BackEnd.Window.halfScreen ? 2 : 1)));
     }
     
     @Override

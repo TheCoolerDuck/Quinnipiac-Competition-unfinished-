@@ -11,16 +11,18 @@ public class Animator {
 	private static final ArrayList<Animator> instances = new ArrayList<Animator>();
 
 	public boolean active = true;
+	public boolean debug = false;
 
 	private final DoubleConsumer set;
 	private final DoubleSupplier get;
-	
+
+	private double value = 0;
 	private double velocity = 0;
 	private double goal = 0;
-	
+
 	private double k1 = 0;
 	private double k2 = 0;
-	
+
 	private double naturalFrequency;
 	private double dampingCoefficient;
 
@@ -29,8 +31,9 @@ public class Animator {
 	//so onGoalReached is only called once
 	private boolean moving = true;
 
-	//used to scale minimum error in case the
-	public double minError = 0.01;
+	public final double minError = 0.01;
+
+
 
 	//region Constructors
 
@@ -43,6 +46,8 @@ public class Animator {
 
 		setNaturalFrequency(naturalFrequency);
 		setDampingCoefficient(dampingCoefficient);
+
+		value = get.getAsDouble();
 
 		instances.add(this);
 	}
@@ -58,18 +63,17 @@ public class Animator {
 	
 	private void Update()
 	{
-		double p = get.getAsDouble();
-
 		//Update
-		p += velocity * Source.Source.deltaTime;
-		velocity += (goal - p - k1 * velocity) * Source.Source.deltaTime / k2;
+		value += velocity * Source.Source.deltaTime;
+		velocity += (goal - value - k1 * velocity) * Source.Source.deltaTime / k2;
 
-		boolean hasVelocity = Math.abs(velocity) > minError;
-		boolean isClose = Math.abs(goal - p) > minError;
-		if (hasVelocity || isClose)
+		boolean hasVelocity = Math.abs(velocity) > minError * Source.Source.deltaTime;
+		boolean isFar = Math.abs(goal - value) > minError;
+
+		if (hasVelocity || isFar)
 		{
 			//set position
-			set.accept(p);
+			set.accept(value);
 			moving = true;
 		}
 		else if (moving)
@@ -81,7 +85,7 @@ public class Animator {
 	}
 
 	//region Getters/Setters
-	
+
 	public double getGoal() {
 		return goal;
 	}
@@ -89,7 +93,15 @@ public class Animator {
 	public void setGoal(double goal) {
 		this.goal = goal;
 	}
-	
+
+	public double getValue() {
+		return value;
+	}
+
+	public void setValue(double value) {
+		this.value = value;
+	}
+
 	public double getNaturalFrequency() {
 		return naturalFrequency;
 	}
@@ -108,7 +120,7 @@ public class Animator {
 	{
 		k1 = dampingCoefficient / (Math.PI * naturalFrequency);
 	}
-	
+
 	private void ReCalcK2()
 	{
 		k2 = 1 / (2 * Math.PI * naturalFrequency * 2 * Math.PI * naturalFrequency);

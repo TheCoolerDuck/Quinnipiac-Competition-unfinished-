@@ -7,17 +7,19 @@ import java.io.IOException;
 import Animation.Animator;
 import BackEnd.Mouse;
 
-public class Key extends ImageUIEntity {
+public class KeyUIEntity extends ImageUIEntity {
 	
-	public Lock getLock() {
+	public UIEntity getLock() {
 		return lock;
 	}
 
-	public void setLock(Lock lock) {
+	public void setLock(UIEntity lock) {
 		this.lock = lock;
 	}
 
-	private Lock lock;
+	private UIEntity lock;
+
+	public Runnable onLock = null;
 	
 	private final Animator animatorX = new Animator(x-> this.setCentralX((int)x), this::getCentralX);
 	private final Animator animatorY = new Animator(y-> this.setCentralY((int)y), this::getCentralY);
@@ -27,22 +29,15 @@ public class Key extends ImageUIEntity {
 	
 	public int lockDistance = 20;
 	
-	public Key(String imagePath, Lock lock) throws IOException {
+	public KeyUIEntity(String imagePath, UIEntity lock) throws IOException {
 		super(imagePath);
-		init(lock);
+		this.lock = lock;
+		animatorX.debug = true;
 	}
 	
-	public Key(BufferedImage image, Lock lock) {
+	public KeyUIEntity(BufferedImage image, UIEntity lock) {
 		super(image);
-		init(lock);
-	}
-	
-	private void init(Lock lock)
-	{	  	
-    	animatorX.setNaturalFrequency(2);
-    	animatorY.setNaturalFrequency(2);
-    	
-    	this.lock = lock;
+		this.lock = lock;
 	}
 
     protected void OnMouseDownOnThis(MouseEvent e) 
@@ -68,9 +63,14 @@ public class Key extends ImageUIEntity {
     			< this.lockDistance * this.lockDistance) 
 		{
     		locked = true;
-        	animatorX.setGoal(lock.getCentralX());
-        	animatorY.setGoal(lock.getCentralY());
+			if (onLock != null)
+				onLock.run();
     	}
+
+		if (locked){
+			animatorX.setGoal(lock.getCentralX());
+			animatorY.setGoal(lock.getCentralY());
+		}
     }
     
     public void setGoalX(int x)

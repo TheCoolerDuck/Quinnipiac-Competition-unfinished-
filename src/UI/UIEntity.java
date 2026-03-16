@@ -1,5 +1,7 @@
 package UI;
 
+import BackEnd.Window;
+
 import java.awt.*;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -27,7 +29,7 @@ public abstract class UIEntity extends JComponent {
 	
 	public UIEntity()
 	{
-		Window.main.panel.add(this);
+		BackEnd.Window.main.panel.add(this);
 		instances.add(this);
 	}
 
@@ -37,11 +39,15 @@ public abstract class UIEntity extends JComponent {
 	 * Sets weather this components will be rendered on top of others
 	 * @param z the render priority (less is higher priority)
 	 */
-	public void setDrawOrder(int z) { Window.main.panel.setComponentZOrder(this, z); }
+	public void setDrawOrder(int z) { BackEnd.Window.main.panel.setComponentZOrder(this, z); }
 
     public abstract int getWidth();
 
     public abstract int getHeight();
+
+    public int getArea(){
+        return getWidth() * getHeight();
+    }
 
     public int getX() { return X; }
 
@@ -150,7 +156,7 @@ public abstract class UIEntity extends JComponent {
     			if (!entity.lastHoverState)
     			{
     				entity.OnHoverExit(e);
-            		if (entity.onHoverEnter != null)
+            		if (entity.onHoverExit != null)
             			entity.onHoverExit.run();
     			}
     			
@@ -175,6 +181,10 @@ public abstract class UIEntity extends JComponent {
         g2.setStroke(new BasicStroke(2));
         g2.setColor(Color.red);
         g2.drawRect(0, 0, getWidth(), getHeight());
+
+        g2.setColor(Color.blue);
+        g2.drawLine(0, this.getHeight() / 2, this.getWidth(), this.getHeight() / 2);
+        g2.drawLine(this.getWidth() / 2, 0, this.getWidth() / 2, this.getHeight());
     }
     
     protected void OnClick(MouseEvent e) {}
@@ -190,7 +200,7 @@ public abstract class UIEntity extends JComponent {
     //region Positioning
 
     public void CenterX() {
-        setCentralX(Window.main.getContentPane().getWidth() / 2);
+        setCentralX(BackEnd.Window.main.getContentPane().getWidth() / 2);
     }
 
     public void CenterY() {

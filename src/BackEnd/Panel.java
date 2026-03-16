@@ -1,17 +1,22 @@
-package UI;
+package BackEnd;
+
+import UI.UIEntity;
 
 import java.awt.*;
+import java.util.ArrayList;
 import javax.swing.*;
 
 
 public class Panel extends JPanel {
 	
 	public boolean debug = false;
+
 	
 	@Override
 	protected void paintComponent(Graphics g)
 	{
 	    super.paintComponent(g);
+
 
 	    if (debug)
 	    {
