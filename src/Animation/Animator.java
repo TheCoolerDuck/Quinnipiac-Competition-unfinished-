@@ -14,7 +14,6 @@ public class Animator {
 	public boolean debug = false;
 
 	private final DoubleConsumer set;
-	private final DoubleSupplier get;
 
 	private double value = 0;
 	private double velocity = 0;
@@ -26,28 +25,19 @@ public class Animator {
 	private double naturalFrequency;
 	private double dampingCoefficient;
 
-	public Runnable onGoalReached = null;
-
-	//so onGoalReached is only called once
-	private boolean moving = true;
-
-	public final double minError = 0.01;
-
-
-
 	//region Constructors
+	public Animator(DoubleConsumer set) { this(set, 0, 1, 1); }
 
-	public Animator(DoubleConsumer set, DoubleSupplier get) { this(set, get, 1, 1); }
+	public Animator(DoubleConsumer set, double originalValue) { this(set, originalValue, 1, 1); }
 
-	public Animator(DoubleConsumer set, DoubleSupplier get, double naturalFrequency, double dampingCoefficient)
+	public Animator(DoubleConsumer set, double originalValue, double naturalFrequency, double dampingCoefficient)
 	{
 		this.set = set;
-		this.get = get;
 
 		setNaturalFrequency(naturalFrequency);
 		setDampingCoefficient(dampingCoefficient);
 
-		value = get.getAsDouble();
+		value = originalValue;
 
 		instances.add(this);
 	}
@@ -67,25 +57,10 @@ public class Animator {
 		value += velocity * Source.Source.deltaTime;
 		velocity += (goal - value - k1 * velocity) * Source.Source.deltaTime / k2;
 
-		boolean hasVelocity = Math.abs(velocity) > minError * Source.Source.deltaTime;
-		boolean isFar = Math.abs(goal - value) > minError;
-
 		if (debug)
 			System.out.println("Goal: " + goal + "; Value: " + value + "; Velocity: " + velocity );
 
 		set.accept(value);
-		if (hasVelocity || isFar)
-		{
-			//set position
-
-			moving = true;
-		}
-		else if (moving)
-		{
-			moving = false;
-			if (onGoalReached != null)
-				onGoalReached.run();
-		}
 	}
 
 	//region Getters/Setters

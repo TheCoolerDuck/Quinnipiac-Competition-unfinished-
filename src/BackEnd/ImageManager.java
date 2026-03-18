@@ -7,10 +7,12 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+//this class prevents duplicet images from being loaded, saving memeory and prossesing power
+//you must load an image before you can use it
 public class ImageManager {
 
-    private static Map<String, String> pathToName = new HashMap<>();
-    private static Map<String, BufferedImage> imageMap  = new HashMap<>();
+    private static final Map<String, String> pathToName = new HashMap<>();
+    private static final Map<String, BufferedImage> imageMap  = new HashMap<>();
 
     public static BufferedImage get(String s)
     {

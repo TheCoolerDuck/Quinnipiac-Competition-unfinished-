@@ -21,8 +21,8 @@ public class KeyUIEntity extends ImageUIEntity {
 
 	public Runnable onLock = null;
 	
-	private final Animator animatorX = new Animator(x-> this.setCentralX((int)x), this::getCentralX);
-	private final Animator animatorY = new Animator(y-> this.setCentralY((int)y), this::getCentralY);
+	private final Animator animatorX = new Animator(x-> this.setCentralX((int)x), this.getCentralX());
+	private final Animator animatorY = new Animator(y-> this.setCentralY((int)y), this.getCentralY());
 	
 	private boolean dragged = false;
 	private boolean locked = false;
