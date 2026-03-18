@@ -21,22 +21,16 @@ public class KeyUIEntity extends ImageUIEntity {
 
 	public Runnable onLock = null;
 	
-	private final Animator animatorX = new Animator(x-> this.setCentralX((int)x), this::getCentralX);
-	private final Animator animatorY = new Animator(y-> this.setCentralY((int)y), this::getCentralY);
+	private final Animator animatorX = new Animator(x-> this.setCentralX((int)x), this.getCentralX());
+	private final Animator animatorY = new Animator(y-> this.setCentralY((int)y), this.getCentralY());
 	
 	private boolean dragged = false;
 	private boolean locked = false;
 	
 	public int lockDistance = 20;
 	
-	public KeyUIEntity(String imagePath, UIEntity lock) throws IOException {
-		super(imagePath);
-		this.lock = lock;
-		animatorX.debug = true;
-	}
-	
-	public KeyUIEntity(BufferedImage image, UIEntity lock) {
-		super(image);
+	public KeyUIEntity(String imageName, UIEntity lock) {
+		super(imageName);
 		this.lock = lock;
 	}
 

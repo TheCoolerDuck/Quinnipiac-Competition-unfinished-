@@ -10,16 +10,16 @@ import javax.imageio.ImageIO;
 
 public class ButtonUIEntity extends ImageUIEntity {
 	
-	private BufferedImage idleImage;
-	private BufferedImage hoverImage;
-	private BufferedImage clickedImage;
+	private String idleImage;
+	private String hoverImage;
+	private String clickedImage;
     
-    public ButtonUIEntity(String idleImagePath, String hoverImagePath, String clickedImagePath) throws IOException {
+    public ButtonUIEntity(String idleImageName, String hoverImageName, String clickedImageName) {
         super();
 
-		idleImage = ImageIO.read(new File(idleImagePath));
-		hoverImage = ImageIO.read(new File(hoverImagePath));
-		clickedImage = ImageIO.read(new File(clickedImagePath));
+		idleImage = idleImageName;
+		hoverImage = hoverImageName;
+		clickedImage = clickedImageName;
 		
 		this.setImage(idleImage);
     }

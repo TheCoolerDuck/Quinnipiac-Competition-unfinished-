@@ -32,18 +32,18 @@ public class StackUIEntity extends UIEntity {
         int cursor = 0;
 
         for (UIEntity child : children) {
-            int halfSpacing = (int) (spacingPerArea * child.getArea() / 2);
+            int halfSpacing = (int) Math.abs(spacingPerArea * child.getArea() / 2);
 
             if (isVertical) {
                 child.setCentralX(crossAxisCenter);
                 if (cursor > 0) cursor += halfSpacing;
                 child.setY(mainAxisStart + (int) cursor);
-                cursor += child.getHeight() + halfSpacing;
+                cursor +=  Math.abs(child.getHeight()) + halfSpacing;
             } else {
                 child.setCentralY(crossAxisCenter);
                 if (cursor > 0) cursor += halfSpacing;
                 child.setX(mainAxisStart + (int) cursor);
-                cursor += child.getWidth() + halfSpacing;
+                cursor += Math.abs(child.getWidth()) + halfSpacing;
             }
         }
     }
@@ -63,10 +63,10 @@ public class StackUIEntity extends UIEntity {
         for (int i = 0; i < children.size(); i++) {
             UIEntity child = children.get(i);
             if (i > 0)
-                width += (int) (spacingPerArea * child.getArea()) / 2;
-            width += child.getWidth();
+                width += (int) Math.abs(spacingPerArea * child.getArea()) / 2;
+            width += Math.abs(child.getWidth());
             if (i < children.size() - 1)
-                width += (int) (spacingPerArea * child.getArea()) / 2;
+                width += (int)  Math.abs(spacingPerArea * child.getArea()) / 2;
         }
         return width;
     }
@@ -84,10 +84,10 @@ public class StackUIEntity extends UIEntity {
         for (int i = 0; i < children.size(); i++) {
             UIEntity child = children.get(i);
             if (i > 0)
-                height += (int) (spacingPerArea * child.getArea()) / 2;
-            height += child.getHeight();
+                height += (int) Math.abs(spacingPerArea * child.getArea()) / 2;
+            height +=  Math.abs(child.getHeight());
             if (i < children.size() - 1)
-                height += (int) (spacingPerArea * child.getArea()) / 2;
+                height += (int) Math.abs(spacingPerArea * child.getArea()) / 2;
         }
         return height;
     }

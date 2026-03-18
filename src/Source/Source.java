@@ -4,6 +4,7 @@ import java.awt.Font;
 import java.io.IOException;
 
 import Animation.Animator;
+import BackEnd.ImageManager;
 import BackEnd.Window;
 import UI.*;
 
@@ -40,7 +41,9 @@ public class Source {
 
 		StackUIEntity stackA;
 
-
+		String buttonImageA = ImageManager.load("src/Assets/UI/DevArtA.png", "A");
+		String buttonImageB = ImageManager.load("src/Assets/UI/DevArtB.png", "B");
+		String buttonImageC = ImageManager.load("src/Assets/UI/DevArtC.png", "C");
 
 		{
 			textA = new TextUIEntity();
@@ -58,12 +61,12 @@ public class Source {
 		}
 
 		{
-			buttonA = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonA = new ButtonUIEntity("A", "B", "C");
 			buttonA.scaleGlobal = 0;
 			buttonA.onUpdate = () -> buttonA.AlignXWith(textA);
 			buttonA.MoveToBottomOf(textB, 10);
 
-			Animator animator = new Animator(buttonA::setScaleGlobal, buttonA::getScaleGlobal);
+			Animator animator = new Animator(buttonA::setScaleGlobal);
 			animator.setGoal(2);
 
 			buttonA.onClick = () -> {
@@ -92,17 +95,26 @@ public class Source {
 
 			//Animators use runnables which can be passed in as a normal function or a lambda function (seen below)
 			//Lambda function structure: (params) -> {(code)};   can be shortend in some cases
-			Animator animatorX = new Animator(x -> groupA.setCenterOfMassX((int)x), groupA::getCenterOfMassX);
-			Animator animatorY = new Animator(y -> groupA.setCenterOfMassY((int)y), groupA::getCenterOfMassY);
+			Animator animatorX = new Animator(x -> groupA.setCenterOfMassX((int)x), groupA.getCenterOfMassX());
+			Animator animatorY = new Animator(y -> groupA.setCenterOfMassY((int)y), groupA.getCenterOfMassY());
 
 			animatorX.setGoal((double) Window.main.getWidth() / 2);
-			animatorY.setGoal(150);
+			animatorY.setGoal(200);
+
+			String boardImageA = ImageManager.load("src/Assets/UI/BoardA.png", "BA");
+			String boardImageB = ImageManager.load("src/Assets/UI/BoardB.png", "BB");
+			String boardImageC = ImageManager.load("src/Assets/UI/BoardC.png", "BC");
+			String boardImageD = ImageManager.load("src/Assets/UI/BoardD.png", "BD");
+			BackBoardUIEntity board = new BackBoardUIEntity(groupA, boardImageA, boardImageC, boardImageB, boardImageD);
+			board.boarder = 30;
+			board.pieceScale = 0.5;
+			board.scaleType = BackBoardUIEntity.FLUID_N_REPEAT;
 		}
 
 		{
-			buttonB = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonB = new ButtonUIEntity("A", "B", "C");
 
-			Animator animator = new Animator(buttonB::setScaleGlobal, buttonB::getScaleGlobal);
+			Animator animator = new Animator(buttonB::setScaleGlobal, 0);
 			animator.setGoal(1);
 
 			buttonB.onClick = () -> {
@@ -122,9 +134,9 @@ public class Source {
 		}
 
 		{
-			buttonC = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonC = new ButtonUIEntity("A", "B", "C");
 
-			Animator animator = new Animator(buttonC::setScaleGlobal, buttonC::getScaleGlobal);
+			Animator animator = new Animator(buttonC::setScaleGlobal, 0);
 			animator.setGoal(1);
 
 			buttonC.onClick = () -> {
@@ -144,9 +156,9 @@ public class Source {
 		}
 
 		{
-			buttonD = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonD = new ButtonUIEntity("A", "B", "C");
 
-			Animator animator = new Animator(buttonD::setScaleGlobal, buttonD::getScaleGlobal);
+			Animator animator = new Animator(buttonD::setScaleGlobal, 0);
 			animator.setGoal(1);
 
 			buttonD.onClick = () -> {
@@ -166,9 +178,9 @@ public class Source {
 		}
 
 		{
-			buttonE = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonE = new ButtonUIEntity("A", "B", "C");
 
-			Animator animator = new Animator(buttonE::setScaleGlobal, buttonE::getScaleGlobal);
+			Animator animator = new Animator(buttonE::setScaleGlobal, 0);
 			animator.setGoal(1);
 
 			buttonE.onClick = () -> {
@@ -188,9 +200,9 @@ public class Source {
 		}
 
 		{
-			buttonF = new ButtonUIEntity("src/Assets/UI/DevArtA.png", "src/Assets/UI/DevArtB.png", "src/Assets/UI/DevArtC.png");
+			buttonF = new ButtonUIEntity("A", "B", "C");
 
-			Animator animator = new Animator(buttonF::setScaleGlobal, buttonF::getScaleGlobal);
+			Animator animator = new Animator(buttonF::setScaleGlobal, 0);
 			animator.setGoal(1);
 
 			buttonF.onClick = () -> {
@@ -228,11 +240,13 @@ public class Source {
 		}
 
 		{
-			lockA = new ImageUIEntity("src/Assets/UI/DevArtE.png");
+			String lockImage = ImageManager.load("src/Assets/UI/DevArtE.png", "lock");
+			lockA = new ImageUIEntity("lock");
 		}
 
 		{
-			keyA = new KeyUIEntity("src/Assets/UI/DevArtD.png", lockA);
+			String keyImage = ImageManager.load("src/Assets/UI/DevArtD.png", "key");
+			keyA = new KeyUIEntity("key", lockA);
 			keyA.scaleGlobal = 0.75;
 			keyA.setDrawOrder(0);
 			//keyA.onLock = () ->
@@ -255,6 +269,19 @@ public class Source {
 			};
 			stackA.spacingPerArea = 0.001;
 			stackA.orientation = StackUIEntity.HORIZONTAL;
+
+			String boardImageA = ImageManager.load("src/Assets/UI/BoardA.png", "BA");
+			String boardImageB = ImageManager.load("src/Assets/UI/BoardB.png", "BB");
+			String boardImageC = ImageManager.load("src/Assets/UI/BoardC.png", "BC");
+			String boardImageD = ImageManager.load("src/Assets/UI/BoardD.png", "BD");
+			BackBoardUIEntity board = new BackBoardUIEntity(stackA, boardImageA, boardImageC, boardImageB, boardImageD);
+			board.boarder = 20;
+			board.pieceScale = 0.5;
+			board.scaleType = BackBoardUIEntity.CONSTANT_N_REPEAT;
+			board.topNumberPieces = 40;
+			board.sideNumberPieces = 2;
+			board.backTopNumberPieces = 40;
+			board.backSideNumberPieces = 2;
 		}
 
 		

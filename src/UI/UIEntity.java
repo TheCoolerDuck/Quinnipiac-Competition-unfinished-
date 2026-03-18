@@ -12,7 +12,7 @@ public abstract class UIEntity extends JComponent {
 
     private final static ArrayList<UIEntity> instances = new ArrayList<UIEntity>();
 
-    public boolean debug = true;
+    public boolean debug = false;
 	private boolean lastHoverState = false;
 
     private int X;
