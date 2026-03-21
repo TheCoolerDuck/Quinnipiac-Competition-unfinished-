@@ -136,6 +136,14 @@ public class BackBoardUIEntity extends UIEntity{
                 cursorY = 0;
             }
         }
+
+        if (!debug)
+            return;
+
+        Font f = new Font("Arial", Font.BOLD, 18);
+
+        g.setFont(f);
+        g.drawString("best: topN:" + innerW / tw + "; sideN: " + innerH / sh + "; backXN: " + innerW / bw + "; backYN: " + innerH / bh, 0,g.getFontMetrics(f).getAscent());
     }
 
     @Override

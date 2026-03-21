@@ -14,11 +14,35 @@ public class Source {
 	public static double deltaTime = 0.01;
 	public final static int FPS = 60;
 
-	public static void main(String[] args) throws InterruptedException, IOException {
+	static void main() throws InterruptedException, IOException {
 		
 		//Creates Window and all other backend components
 		new Window();
 
+		LoadTestWorldB();
+
+		long lastTime = System.currentTimeMillis();
+		
+		while (Window.main.isActive())
+		{
+			Thread.sleep(1000 / FPS);
+			
+			long currentTime = System.currentTimeMillis();
+			
+			//delta time is time between frames, nice for animation/physics
+			deltaTime = (currentTime - lastTime) / 1000.0;
+			
+			lastTime = currentTime;
+			
+			UIEntity.UpdateAll();
+			
+			Animator.UpdateAll();
+			
+			Window.main.repaint();
+		}
+	}
+
+	private static void LoadTestWorldA() throws IOException {
 		TextUIEntity textA;
 		TextUIEntity textB;
 
@@ -110,6 +134,7 @@ public class Source {
 			board.pieceScale = 0.5;
 			board.scaleType = BackBoardUIEntity.FLUID_N_REPEAT;
 		}
+
 
 		{
 			buttonB = new ButtonUIEntity("A", "B", "C");
@@ -267,7 +292,7 @@ public class Source {
 				stackA.CenterX();
 				stackA.CenterY();
 			};
-			stackA.spacingPerArea = 0.001;
+			stackA.spacingFactor = 0.001;
 			stackA.orientation = StackUIEntity.HORIZONTAL;
 
 			String boardImageA = ImageManager.load("src/Assets/UI/BoardA.png", "BA");
@@ -283,26 +308,116 @@ public class Source {
 			board.backTopNumberPieces = 40;
 			board.backSideNumberPieces = 2;
 		}
+	}
 
-		
-		long lastTime = System.currentTimeMillis();
-		
-		while (Window.main.isActive())
+	private static void LoadTestWorldB() throws IOException {
+
+		ButtonUIEntity buttonA;
+		ButtonUIEntity buttonB;
+		ButtonUIEntity buttonC;
+
+		StackUIEntity stackA;
+
+		ImageManager.load("src/Assets/UI/DevArtA.png", "A");
+		ImageManager.load("src/Assets/UI/DevArtB.png", "B");
+		ImageManager.load("src/Assets/UI/DevArtC.png", "C");
+
+		ImageManager.load("src/Assets/UI/BoardA.png", "BA");
+		ImageManager.load("src/Assets/UI/BoardB.png", "BB");
+		ImageManager.load("src/Assets/UI/BoardC.png", "BC");
+		ImageManager.load("src/Assets/UI/BoardD.png", "BD");
+
 		{
-			Thread.sleep(1000 / FPS);
-			
-			long currentTime = System.currentTimeMillis();
-			
-			//delta time is time between frames, nice for animation/physics
-			deltaTime = (currentTime - lastTime) / 1000.0;
-			
-			lastTime = currentTime;
-			
-			UIEntity.UpdateAll();
-			
-			Animator.UpdateAll();
-			
-			Window.main.repaint();
+			double scale = 2;
+			buttonA = new ButtonUIEntity("A", "B", "C");
+			buttonA.scaleGlobal = 0;
+
+			Animator animator = new Animator(buttonA::setScaleGlobal);
+			animator.setGoal(scale);
+
+			buttonA.onClick = () -> {
+				animator.setNaturalFrequency(2);
+				animator.setDampingCoefficient(1);
+				animator.setGoal(0);
+			};
+
+			buttonA.onHoverEnter = () -> {
+				if (animator.getGoal() == scale)
+					animator.setGoal(scale * 1.1);
+			};
+			buttonA.onHoverExit = () -> {
+				if (animator.getGoal() == scale * 1.1)
+					animator.setGoal(scale);
+			};
+		}
+
+		{
+			double scale = 2;
+			buttonB = new ButtonUIEntity("A", "B", "C");
+			buttonB.scaleGlobal = 0;
+
+			Animator animator = new Animator(buttonB::setScaleGlobal);
+			animator.setGoal(scale);
+
+			buttonB.onClick = () -> {
+				animator.setNaturalFrequency(2);
+				animator.setDampingCoefficient(1);
+				animator.setGoal(0);
+			};
+
+			buttonB.onHoverEnter = () -> {
+				if (animator.getGoal() == scale)
+					animator.setGoal(scale * 1.1);
+			};
+			buttonB.onHoverExit = () -> {
+				if (animator.getGoal() == scale * 1.1)
+					animator.setGoal(scale);
+			};
+		}
+
+		{
+			double scale = 2;
+			buttonC = new ButtonUIEntity("A", "B", "C");
+			buttonC.scaleGlobal = 0;
+
+			Animator animator = new Animator(buttonC::setScaleGlobal);
+			animator.setGoal(scale);
+
+			buttonC.onClick = () -> {
+				animator.setNaturalFrequency(2);
+				animator.setDampingCoefficient(1);
+				animator.setGoal(0);
+			};
+
+			buttonC.onHoverEnter = () -> {
+				if (animator.getGoal() == scale)
+					animator.setGoal(scale * 1.1);
+			};
+			buttonC.onHoverExit = () -> {
+				if (animator.getGoal() == scale * 1.1)
+					animator.setGoal(scale);
+			};
+		}
+
+		{
+			stackA = new StackUIEntity();
+			stackA.children.add(buttonA);
+			stackA.children.add(buttonB);
+			stackA.children.add(buttonC);
+			stackA.spacingFactor = 5;
+			stackA.onUpdate = () -> {
+				stackA.CenterX();
+				stackA.CenterY();
+			};
+
+			BackBoardUIEntity board = new BackBoardUIEntity(stackA, "BA", "BC", "BB", "BD");
+			board.boarder = 30;
+			board.pieceScale = 0.5;
+			board.scaleType = BackBoardUIEntity.CONSTANT_N_REPEAT;
+			board.topNumberPieces = 13;
+			board.sideNumberPieces = 13;
+			board.backTopNumberPieces = 13;
+			board.backSideNumberPieces = 13;
 		}
 	}
 

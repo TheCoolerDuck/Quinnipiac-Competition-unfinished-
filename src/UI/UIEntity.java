@@ -12,7 +12,7 @@ public abstract class UIEntity extends JComponent {
 
     private final static ArrayList<UIEntity> instances = new ArrayList<UIEntity>();
 
-    public boolean debug = false;
+    public boolean debug = true;
 	private boolean lastHoverState = false;
 
     private int X;
@@ -26,6 +26,7 @@ public abstract class UIEntity extends JComponent {
 	public Runnable onHoverExit = null;
 	public Runnable onDispose = null;
 	//endregion
+
 	
 	public UIEntity()
 	{

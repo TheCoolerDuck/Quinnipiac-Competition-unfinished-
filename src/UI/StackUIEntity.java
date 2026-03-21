@@ -11,7 +11,7 @@ public class StackUIEntity extends UIEntity {
     public int orientation = VERTICAL;
 
     //this is done so objects with 0 area have no spacing added, also looks better imo
-    public double spacingPerArea = 0;
+    public double spacingFactor = 0;
 
     public StackUIEntity(int orientation) {
         super();
@@ -32,19 +32,23 @@ public class StackUIEntity extends UIEntity {
         int cursor = 0;
 
         for (UIEntity child : children) {
-            int halfSpacing = (int) Math.abs(spacingPerArea * child.getArea() / 2);
+
+            if (child.getArea() == 0)
+                continue;
+
+            cursor += (int) (child.getArea() * spacingFactor / 2e4);
 
             if (isVertical) {
                 child.setCentralX(crossAxisCenter);
-                if (cursor > 0) cursor += halfSpacing;
-                child.setY(mainAxisStart + (int) cursor);
-                cursor +=  Math.abs(child.getHeight()) + halfSpacing;
+                child.setY(mainAxisStart + cursor);
             } else {
                 child.setCentralY(crossAxisCenter);
-                if (cursor > 0) cursor += halfSpacing;
-                child.setX(mainAxisStart + (int) cursor);
-                cursor += Math.abs(child.getWidth()) + halfSpacing;
+                child.setX(mainAxisStart + cursor);
             }
+
+            cursor += isVertical ? child.getHeight() : child.getWidth();
+
+            cursor += (int) (child.getArea() * spacingFactor / 2e4);
         }
     }
 
@@ -52,43 +56,54 @@ public class StackUIEntity extends UIEntity {
 
     @Override
     public int getWidth() {
+        if (children.isEmpty())
+            return 0;
+
         if (orientation == VERTICAL) {
             return children.stream()
-                    .mapToInt(UIEntity::getWidth)
+                    .mapToInt(x -> x.getWidth() + (int) (x.getArea() * spacingFactor / 1e4))
                     .max()
                     .orElse(0);
         }
 
         int width = 0;
-        for (int i = 0; i < children.size(); i++) {
-            UIEntity child = children.get(i);
-            if (i > 0)
-                width += (int) Math.abs(spacingPerArea * child.getArea()) / 2;
-            width += Math.abs(child.getWidth());
-            if (i < children.size() - 1)
-                width += (int)  Math.abs(spacingPerArea * child.getArea()) / 2;
+        UIEntity last = null;
+        for (UIEntity child : children) {
+
+            if (child.getArea() == 0)
+                continue;
+
+            width += child.getWidth();
+
+            width += (int) (child.getArea() * spacingFactor / 1e4);
         }
+
         return width;
     }
 
     @Override
     public int getHeight() {
+        if (children.isEmpty())
+            return 0;
+
         if (orientation == HORIZONTAL) {
             return children.stream()
-                    .mapToInt(UIEntity::getHeight)
+                    .mapToInt(x -> x.getHeight() + (int) (x.getArea() * spacingFactor / 1e4))
                     .max()
                     .orElse(0);
         }
 
         int height = 0;
-        for (int i = 0; i < children.size(); i++) {
-            UIEntity child = children.get(i);
-            if (i > 0)
-                height += (int) Math.abs(spacingPerArea * child.getArea()) / 2;
-            height +=  Math.abs(child.getHeight());
-            if (i < children.size() - 1)
-                height += (int) Math.abs(spacingPerArea * child.getArea()) / 2;
+        for (UIEntity child : children) {
+
+            if (child.getArea() == 0)
+                continue;
+
+            height += child.getHeight();
+
+            height += (int) (child.getArea() * spacingFactor / 1e4);
         }
+
         return height;
     }
 
@@ -100,12 +115,12 @@ public class StackUIEntity extends UIEntity {
         this.orientation = orientation;
     }
 
-    public double getSpacingPerArea() {
-        return spacingPerArea;
+    public double getSpacingFactor() {
+        return spacingFactor;
     }
 
-    public void setSpacingPerArea(double spacingPerArea) {
-        this.spacingPerArea = spacingPerArea;
+    public void setSpacingFactor(double spacingFactor) {
+        this.spacingFactor = spacingFactor;
     }
 
     //endregion

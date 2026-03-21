@@ -5,8 +5,6 @@ import java.awt.Graphics;
 import java.util.ArrayList;
 
 public class UIEntityGroup extends UIEntity {
-	
-	public boolean debug = false;
 
     public ArrayList<UIEntity> children = new ArrayList<>();
 
@@ -116,11 +114,11 @@ public class UIEntityGroup extends UIEntity {
     }
 
     private int[] getHorizontalBounds() {
-        int min = children.getFirst().getMinX();
-        int max = children.getFirst().getMaxX();
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
 
         for (UIEntity entity : children) {
-        	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        	if (entity == this || entity.getWidth() <= 0 || entity.getHeight() <= 0)
         		continue;
         	
             if (entity.getMinX() < min)
@@ -132,11 +130,11 @@ public class UIEntityGroup extends UIEntity {
     }
 
     private int[] getVerticalBounds() {
-        int min = children.getFirst().getMinY();
-        int max = children.getFirst().getMaxY();
+        int min = Integer.MAX_VALUE;
+        int max = Integer.MIN_VALUE;
 
         for (UIEntity entity : children) {
-        	if (entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        	if (entity == this || entity.getWidth() <= 0 || entity.getHeight() <= 0)
         		continue;
         	
             if (entity.getMinY() < min)
