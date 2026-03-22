@@ -81,6 +81,14 @@ public class Animator {
 		this.value = value;
 	}
 
+	public double getVelocity() {
+		return velocity;
+	}
+
+	public void setVelocity(double velocity) {
+		this.velocity = velocity;
+	}
+
 	public double getNaturalFrequency() {
 		return naturalFrequency;
 	}
