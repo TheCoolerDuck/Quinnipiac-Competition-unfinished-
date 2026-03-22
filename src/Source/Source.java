@@ -14,7 +14,7 @@ public class Source {
 	public static double deltaTime = 0.01;
 	public final static int FPS = 60;
 
-	static void main() throws InterruptedException, IOException {
+	public static void main(String[] args) throws InterruptedException, IOException {
 		
 		//Creates Window and all other backend components
 		new Window();
