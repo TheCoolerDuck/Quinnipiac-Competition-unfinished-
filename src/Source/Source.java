@@ -19,7 +19,8 @@ public class Source {
 		//Creates Window and all other backend components
 		new Window();
 
-		LoadTestWorldB();
+		//LoadTestWorldB();
+		LoadBuildWorld();
 
 		long lastTime = System.currentTimeMillis();
 		
@@ -73,7 +74,7 @@ public class Source {
 			textA = new TextUIEntity();
 			textA.setText("[Insert Name Here]");
 			textA.setFont(new Font("Arial", Font.PLAIN, 50 / (Window.halfScreen ? 2 : 1)));
-			textA.setY(150);
+			textA.setWorldY(150);
 		}
 
 		{
@@ -114,8 +115,8 @@ public class Source {
 			groupA.children.add(textA);
 			groupA.children.add(textB);
 			groupA.children.add(buttonA);
-			groupA.setX(-300);
-			groupA.setY(-300);
+			groupA.setWorldX(-300);
+			groupA.setWorldY(-300);
 
 			//Animators use runnables which can be passed in as a normal function or a lambda function (seen below)
 			//Lambda function structure: (params) -> {(code)};   can be shortend in some cases
@@ -421,4 +422,128 @@ public class Source {
 		}
 	}
 
+	private static void LoadBuildWorld() throws IOException {
+		ImageManager.load("src/Assets/UI/TreeBackground/Tree.png", "Tree");
+
+		ImageManager.load("src/Assets/UI/DevArtA.png", "A");
+		ImageManager.load("src/Assets/UI/DevArtB.png", "B");
+		ImageManager.load("src/Assets/UI/DevArtC.png", "C");
+
+		ImageManager.load("src/Assets/UI/BackPanelA/BackPanelACenter.jpg", "PanelACenter");
+		ImageManager.load("src/Assets/UI/BackPanelA/BackPanelACorner.png", "PanelACorner");
+		ImageManager.load("src/Assets/UI/BackPanelA/BackPanelASide.png", "PanelASide");
+		ImageManager.load("src/Assets/UI/BackPanelA/BackPanelATop.png", "PanelATop");
+
+		ImageUIEntity tree;
+
+		ButtonUIEntity buttonA;
+		ButtonUIEntity buttonB;
+		ButtonUIEntity buttonC;
+
+		StackUIEntity stackA;
+
+		{
+			tree = new ImageUIEntity("Tree");
+
+			tree.scaleGlobal = 0.790123457;
+		}
+
+		{
+
+			{
+				double scale = 2;
+				buttonA = new ButtonUIEntity("A", "B", "C");
+				buttonA.scaleGlobal = 0;
+
+				Animator animator = new Animator(buttonA::setScaleGlobal);
+				animator.setGoal(scale);
+
+				buttonA.onClick = () -> {
+					animator.setNaturalFrequency(2);
+					animator.setDampingCoefficient(1);
+					animator.setGoal(0);
+				};
+
+				buttonA.onHoverEnter = () -> {
+					if (animator.getGoal() == scale)
+						animator.setGoal(scale * 1.1);
+				};
+				buttonA.onHoverExit = () -> {
+					if (animator.getGoal() == scale * 1.1)
+						animator.setGoal(scale);
+				};
+			}
+
+			{
+				double scale = 2;
+				buttonB = new ButtonUIEntity("A", "B", "C");
+				buttonB.scaleGlobal = 0;
+
+				Animator animator = new Animator(buttonB::setScaleGlobal);
+				animator.setGoal(scale);
+
+				buttonB.onClick = () -> {
+					animator.setNaturalFrequency(2);
+					animator.setDampingCoefficient(1);
+					animator.setGoal(0);
+				};
+
+				buttonB.onHoverEnter = () -> {
+					if (animator.getGoal() == scale)
+						animator.setGoal(scale * 1.1);
+				};
+				buttonB.onHoverExit = () -> {
+					if (animator.getGoal() == scale * 1.1)
+						animator.setGoal(scale);
+				};
+			}
+
+			{
+				double scale = 2;
+				buttonC = new ButtonUIEntity("A", "B", "C");
+				buttonC.scaleGlobal = 0;
+
+				Animator animator = new Animator(buttonC::setScaleGlobal);
+				animator.setGoal(scale);
+
+				buttonC.onClick = () -> {
+					animator.setNaturalFrequency(2);
+					animator.setDampingCoefficient(1);
+					animator.setGoal(0);
+				};
+
+				buttonC.onHoverEnter = () -> {
+					if (animator.getGoal() == scale)
+						animator.setGoal(scale * 1.1);
+				};
+				buttonC.onHoverExit = () -> {
+					if (animator.getGoal() == scale * 1.1)
+						animator.setGoal(scale);
+				};
+			}
+
+			{
+				stackA = new StackUIEntity();
+				stackA.children.add(buttonA);
+				stackA.children.add(buttonB);
+				stackA.children.add(buttonC);
+				stackA.spacingFactor = 5;
+				stackA.onUpdate = () -> {
+					stackA.CenterX();
+					stackA.CenterY();
+				};
+
+				BackBoardUIEntity board = new BackBoardUIEntity(stackA, "PanelACorner", "PanelATop", "PanelASide", "PanelACenter");
+				board.boarder = 100;
+				board.pieceScale = 0.1;
+				board.scaleType = BackBoardUIEntity.CONSTANT_N_REPEAT;
+				board.topNumberPieces = 3;
+				board.sideNumberPieces = 3;
+				board.backTopNumberPieces = 1;
+				board.backSideNumberPieces = 1;
+			}
+		}
+
+		tree.setDrawOrder(Window.main.panel.getComponentCount() - 1);
+	}
 }

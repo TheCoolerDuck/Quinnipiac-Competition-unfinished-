@@ -29,14 +29,14 @@ public class TextUIEntity extends UIEntity {
     //region Getters/Setters
 
     @Override
-    public int getWidth() {
+    public int getWorldWidth() {
     	if (fontMetrics == null)
     		return 0;
     	return fontMetrics.stringWidth(text);
     }
 
     @Override
-    public int getHeight() {
+    public int getWorldHeight() {
     	if (fontMetrics == null)
     		return 0;
     	return fontMetrics.getHeight();

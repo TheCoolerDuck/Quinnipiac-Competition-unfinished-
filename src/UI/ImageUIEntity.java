@@ -41,10 +41,10 @@ public class ImageUIEntity extends UIEntity{
 	protected void paintComponent(Graphics g)
 	{
 		if (image != null) {
-			int x = flipX ? getWidth() : 0;
-			int y = flipY ? getHeight() : 0;
-			int w = flipX ? -getWidth() : getWidth();
-			int h = flipY ? -getHeight() : getHeight();
+			int x = flipX ? getScreenWidth() : 0;
+			int y = flipY ? getScreenHeight() : 0;
+			int w = flipX ? -getScreenWidth() : getScreenWidth();
+			int h = flipY ? -getScreenHeight() : getScreenHeight();
 			g.drawImage(ImageManager.get(image), x, y, w, h, null);
 		}
 
@@ -83,14 +83,14 @@ public class ImageUIEntity extends UIEntity{
 
 
 	@Override
-	public int getWidth() {
+	public int getWorldWidth() {
 		if (image == null)
 			return 0;
 		return (int)(ImageManager.get(image).getWidth() * scaleX * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
 	}
 
 	@Override
-	public int getHeight() {
+	public int getWorldHeight() {
 		if (image == null)
 			return 0;
 		return (int)(ImageManager.get(image).getHeight() * scaleY * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);

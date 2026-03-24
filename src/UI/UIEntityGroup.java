@@ -20,13 +20,13 @@ public class UIEntityGroup extends UIEntity {
             return;
         
         g.setColor(Color.green);
-        g.fillOval(getCenterOfMassX() - getX() - 5, getCenterOfMassY() - getY() - 5, 10, 10);
+        g.fillOval(getCenterOfMassX() - getWorldX() - 5, getCenterOfMassY() - getWorldY() - 5, 10, 10);
     }
 
     //region Getters/Setters
 
     @Override
-    public int getWidth() {
+    public int getWorldWidth() {
         if (children == null || children.isEmpty())
             return 0;
 
@@ -35,7 +35,7 @@ public class UIEntityGroup extends UIEntity {
     }
 
     @Override
-    public int getHeight() {
+    public int getWorldHeight() {
         if (children == null || children.isEmpty())
             return 0;
 
@@ -44,7 +44,7 @@ public class UIEntityGroup extends UIEntity {
     }
 
     @Override
-    public int getX() {
+    public int getWorldX() {
         if (children == null || children.isEmpty())
             return 0;
 
@@ -53,7 +53,7 @@ public class UIEntityGroup extends UIEntity {
     }
 
     @Override
-    public int getY() {
+    public int getWorldY() {
         if (children.isEmpty())
             return 0;
 
@@ -62,18 +62,18 @@ public class UIEntityGroup extends UIEntity {
     }
 
     @Override
-    public void setX(int x) {
-        int delta = x - getX();
+    public void setWorldX(int x) {
+        int delta = x - getWorldX();
         for (UIEntity entity : children) {
-            entity.setX(entity.getX() + delta);
+            entity.setWorldX(entity.getWorldX() + delta);
         }
     }
 
     @Override
-    public void setY(int y) {
-        int delta = y - getY();
+    public void setWorldY(int y) {
+        int delta = y - getWorldY();
         for (UIEntity entity : children) {
-            entity.setY(entity.getY() + delta);
+            entity.setWorldY(entity.getWorldY() + delta);
         }
     }
 
@@ -83,8 +83,8 @@ public class UIEntityGroup extends UIEntity {
 
         for (UIEntity entity : children)
         {
-            totalMass += entity.getWidth() * entity.getHeight();
-            runningCenter += entity.getCentralX() * entity.getWidth() * entity.getHeight();
+            totalMass += entity.getWorldWidth() * entity.getWorldHeight();
+            runningCenter += entity.getCentralX() * entity.getWorldWidth() * entity.getWorldHeight();
         }
 
         return runningCenter / totalMass;
@@ -96,8 +96,8 @@ public class UIEntityGroup extends UIEntity {
 
         for (UIEntity entity : children)
         {
-            totalMass += entity.getWidth() * entity.getHeight();
-            runningCenter += entity.getCentralY() * entity.getWidth() * entity.getHeight();
+            totalMass += entity.getWorldWidth() * entity.getWorldHeight();
+            runningCenter += entity.getCentralY() * entity.getWorldWidth() * entity.getWorldHeight();
         }
 
         return runningCenter / totalMass;
@@ -105,12 +105,12 @@ public class UIEntityGroup extends UIEntity {
 
     public void setCenterOfMassX(int x)
     {
-        setX(x + (getX() - getCenterOfMassX()));
+        setWorldX(x + (getWorldX() - getCenterOfMassX()));
     }
 
     public void setCenterOfMassY(int y)
     {
-        setY(y + (getY() - getCenterOfMassY()));
+        setWorldY(y + (getWorldY() - getCenterOfMassY()));
     }
 
     private int[] getHorizontalBounds() {
@@ -118,13 +118,13 @@ public class UIEntityGroup extends UIEntity {
         int max = Integer.MIN_VALUE;
 
         for (UIEntity entity : children) {
-        	if (entity == this || entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        	if (entity == this || entity.getWorldWidth() <= 0 || entity.getWorldHeight() <= 0)
         		continue;
         	
-            if (entity.getMinX() < min)
-                min = entity.getMinX();
-            if (entity.getMaxX() > max)
-                max = entity.getMaxX();
+            if (entity.getWorldMinX() < min)
+                min = entity.getWorldMinX();
+            if (entity.getScreenMaxX() > max)
+                max = entity.getScreenMaxX();
         }
         return new int[]{min, max};
     }
@@ -134,13 +134,13 @@ public class UIEntityGroup extends UIEntity {
         int max = Integer.MIN_VALUE;
 
         for (UIEntity entity : children) {
-        	if (entity == this || entity.getWidth() <= 0 || entity.getHeight() <= 0)
+        	if (entity == this || entity.getWorldWidth() <= 0 || entity.getWorldHeight() <= 0)
         		continue;
         	
-            if (entity.getMinY() < min)
-                min = entity.getMinY();
-            if (entity.getMaxY() > max)
-                max = entity.getMaxY();
+            if (entity.getWorldMinY() < min)
+                min = entity.getWorldMinY();
+            if (entity.getWorldMaxY() > max)
+                max = entity.getWorldMaxY();
         }
         return new int[]{min, max};
     }
