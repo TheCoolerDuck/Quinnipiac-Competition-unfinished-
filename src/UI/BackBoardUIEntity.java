@@ -1,6 +1,7 @@
 package UI;
 
 import BackEnd.ImageManager;
+import Source.Camera;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -57,17 +58,19 @@ public class BackBoardUIEntity extends UIEntity{
         BufferedImage topImg    = ImageManager.get(top);
         BufferedImage backImg   = ImageManager.get(back);
 
-        int cw = (int)(cornerImg.getWidth()  * pieceScale);
-        int ch = (int)(cornerImg.getHeight() * pieceScale);
-        int sw = (int)(sideImg.getWidth()    * pieceScale);
-        int sh = (int)(sideImg.getHeight()    * pieceScale);
-        int tw = (int)(topImg.getWidth()    * pieceScale);
-        int th = (int)(topImg.getHeight()    * pieceScale);
-        int bw = (int)(backImg.getWidth()    * pieceScale);
-        int bh = (int)(backImg.getHeight()    * pieceScale);
+        double scale = pieceScale / Camera.scale;
 
-        int innerW = getWidth()  - cw * 2;
-        int innerH = getHeight() - ch * 2;
+        int cw = (int)(cornerImg.getWidth() * scale);
+        int ch = (int)(cornerImg.getHeight() * scale);
+        int sw = (int)(sideImg.getWidth() * scale);
+        int sh = (int)(sideImg.getHeight() * scale);
+        int tw = (int)(topImg.getWidth() * scale);
+        int th = (int)(topImg.getHeight() * scale);
+        int bw = (int)(backImg.getWidth() * scale);
+        int bh = (int)(backImg.getHeight() * scale);
+
+        int innerW = getScreenWidth()  - cw * 2;
+        int innerH = getScreenHeight() - ch * 2;
 
         int topN = scaleType == FLUID_N_REPEAT ? innerW / tw : topNumberPieces;
         int topW = innerW / topN;
@@ -94,25 +97,25 @@ public class BackBoardUIEntity extends UIEntity{
                 cursor += sideH + (i < diff ? 1 : 0);
             }
         }
-        g.drawImage(cornerImg, 0,       getHeight(), cw,   -ch,     null); // 3
+        g.drawImage(cornerImg, 0,       getScreenHeight(), cw,   -ch,     null); // 3
         { //4
             int cursor = 0;
             int diff = innerW - (topN * topW);
             for (int i = 0; i < topN; i++) {
-                g.drawImage(topImg,cw + cursor, getHeight(), topW + (i < diff ? 1 : 0), -th, null);
+                g.drawImage(topImg,cw + cursor, getScreenHeight(), topW + (i < diff ? 1 : 0), -th, null);
                 cursor += topW + (i < diff ? 1 : 0);
             }
         }
-        g.drawImage(cornerImg, getWidth(), getHeight(), -cw,  -ch,     null); // 5
+        g.drawImage(cornerImg, getScreenWidth(), getScreenHeight(), -cw,  -ch,     null); // 5
         { //6
             int cursor = 0;
             int diff = innerH - (sideN * sideH);
             for (int i = 0; i < sideN; i++) {
-                g.drawImage(sideImg, getWidth(), ch + cursor, -sw, sideH + (i < diff ? 1 : 0), null);
+                g.drawImage(sideImg, getScreenWidth(), ch + cursor, -sw, sideH + (i < diff ? 1 : 0), null);
                 cursor += sideH + (i < diff ? 1 : 0);
             }
         }
-        g.drawImage(cornerImg, getWidth(), 0,        -cw,   ch,     null); // 7
+        g.drawImage(cornerImg, getScreenWidth(), 0,        -cw,   ch,     null); // 7
         { //8
             int cursor = 0;
             int diff = innerW - (topN * topW);
@@ -147,13 +150,13 @@ public class BackBoardUIEntity extends UIEntity{
     }
 
     @Override
-    public int getWidth() {
-        return target.getWidth() + 2 * boarder;
+    public int getWorldWidth() {
+        return target.getWorldWidth() + 2 * boarder;
     }
 
     @Override
-    public int getHeight() {
-        return target.getHeight() + 2 * boarder;
+    public int getWorldHeight() {
+        return target.getWorldHeight() + 2 * boarder;
     }
 
 

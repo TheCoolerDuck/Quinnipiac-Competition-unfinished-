@@ -1,5 +1,7 @@
 package UI;
 
+import Source.Camera;
+
 import java.util.ArrayList;
 
 public class StackUIEntity extends UIEntity {
@@ -28,40 +30,40 @@ public class StackUIEntity extends UIEntity {
 
         boolean isVertical = orientation == VERTICAL;
         int crossAxisCenter = isVertical ? getCentralX() : getCentralY();
-        int mainAxisStart = isVertical ? getMinY() : getMinX();
+        int mainAxisStart = isVertical ? getWorldMinY() : getWorldMinX();
         int cursor = 0;
 
         for (UIEntity child : children) {
 
-            if (child.getArea() == 0)
+            if (child.getWorldArea() == 0)
                 continue;
 
-            cursor += (int) (child.getArea() * spacingFactor / 2e4);
+            cursor += (int) (child.getWorldArea() * spacingFactor / 2e4);
 
             if (isVertical) {
                 child.setCentralX(crossAxisCenter);
-                child.setY(mainAxisStart + cursor);
+                child.setWorldY(mainAxisStart + cursor);
             } else {
                 child.setCentralY(crossAxisCenter);
-                child.setX(mainAxisStart + cursor);
+                child.setWorldX(mainAxisStart + cursor);
             }
 
-            cursor += isVertical ? child.getHeight() : child.getWidth();
+            cursor += isVertical ? child.getWorldHeight() : child.getWorldWidth();
 
-            cursor += (int) (child.getArea() * spacingFactor / 2e4);
+            cursor += (int) (child.getWorldArea() * spacingFactor / 2e4);
         }
     }
 
     //region Getters/Setters
 
     @Override
-    public int getWidth() {
+    public int getWorldWidth() {
         if (children.isEmpty())
             return 0;
 
         if (orientation == VERTICAL) {
             return children.stream()
-                    .mapToInt(x -> x.getWidth() + (int) (x.getArea() * spacingFactor / 1e4))
+                    .mapToInt(x -> x.getWorldWidth() + (int) (x.getWorldArea() * spacingFactor / 1e4))
                     .max()
                     .orElse(0);
         }
@@ -70,25 +72,25 @@ public class StackUIEntity extends UIEntity {
         UIEntity last = null;
         for (UIEntity child : children) {
 
-            if (child.getArea() == 0)
+            if (child.getWorldArea() == 0)
                 continue;
 
-            width += child.getWidth();
+            width += child.getWorldWidth();
 
-            width += (int) (child.getArea() * spacingFactor / 1e4);
+            width += (int) (child.getWorldArea() * spacingFactor / 1e4);
         }
 
         return width;
     }
 
     @Override
-    public int getHeight() {
+    public int getWorldHeight() {
         if (children.isEmpty())
             return 0;
 
         if (orientation == HORIZONTAL) {
             return children.stream()
-                    .mapToInt(x -> x.getHeight() + (int) (x.getArea() * spacingFactor / 1e4))
+                    .mapToInt(x -> x.getWorldHeight() + (int) (x.getWorldArea() * spacingFactor / 1e4))
                     .max()
                     .orElse(0);
         }
@@ -96,12 +98,12 @@ public class StackUIEntity extends UIEntity {
         int height = 0;
         for (UIEntity child : children) {
 
-            if (child.getArea() == 0)
+            if (child.getWorldArea() == 0)
                 continue;
 
-            height += child.getHeight();
+            height += child.getWorldHeight();
 
-            height += (int) (child.getArea() * spacingFactor / 1e4);
+            height += (int) (child.getWorldArea() * spacingFactor / 1e4);
         }
 
         return height;

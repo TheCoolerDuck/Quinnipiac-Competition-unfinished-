@@ -1,0 +1,3 @@
+- Library recomendations 
+- Java syntax/tecnicality questions
+- Doccumentation
