@@ -5,7 +5,7 @@ public class Camera {
     public static int X;
     public static int Y;
 
-    public static double scale = 1;
+    public static double scale = 3;
 
     public static double getScale() {
         return scale;

@@ -1,12 +1,15 @@
 package BackEnd;
 
+import Source.Camera;
+
 import javax.swing.*;
 import java.awt.*;
 
 public class Window extends JFrame {
 
-	public static final boolean halfScreen = false;
+	private static final boolean halfScreen = false;
 	public static Window main = null;
+	public static final Color background = new Color(181, 217, 213);
 	
 	public Panel panel;
 	
@@ -31,9 +34,10 @@ public class Window extends JFrame {
 		}
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setVisible(true);
+		setUndecorated(true);
 		
 		panel = new Panel();
+		panel.setBackground(background);
 		panel.setLayout(null);
 		this.add(panel);
 		

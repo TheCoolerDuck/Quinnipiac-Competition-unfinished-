@@ -13,7 +13,7 @@ public abstract class UIEntity extends JComponent {
 
     private final static ArrayList<UIEntity> instances = new ArrayList<UIEntity>();
 
-    public boolean debug = true;
+    public boolean debug = false;
 	private boolean lastHoverState = false;
 
     private int X;
@@ -42,6 +42,14 @@ public abstract class UIEntity extends JComponent {
 	 * @param z the render priority (less is higher priority)
 	 */
 	public void setDrawOrder(int z) { BackEnd.Window.main.panel.setComponentZOrder(this, z); }
+
+    public void drawBefore(UIEntity o) { BackEnd.Window.main.panel.setComponentZOrder(this, Window.main.panel.getComponentZOrder(o) + 1); }
+
+    public void drawAfter(UIEntity o) { BackEnd.Window.main.panel.setComponentZOrder(this, Window.main.panel.getComponentZOrder(o) - 1); }
+
+    public void drawFirst() { BackEnd.Window.main.panel.setComponentZOrder(this, 0); }
+
+    public void drawLast() { BackEnd.Window.main.panel.setComponentZOrder(this, Window.main.panel.getComponentCount() - 1); }
 
     public abstract int getWorldWidth();
 
