@@ -86,14 +86,14 @@ public class ImageUIEntity extends UIEntity{
 	public int getWorldWidth() {
 		if (image == null)
 			return 0;
-		return (int)(ImageManager.get(image).getWidth() * scaleX * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
+		return (int)(ImageManager.get(image).getWidth() * scaleX * scaleGlobal);
 	}
 
 	@Override
 	public int getWorldHeight() {
 		if (image == null)
 			return 0;
-		return (int)(ImageManager.get(image).getHeight() * scaleY * (Window.halfScreen ? 0.5 : 1) * scaleGlobal);
+		return (int)(ImageManager.get(image).getHeight() * scaleY * scaleGlobal);
 	}
 	
 	//endregion

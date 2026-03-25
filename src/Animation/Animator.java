@@ -38,6 +38,7 @@ public class Animator {
 		setDampingCoefficient(dampingCoefficient);
 
 		value = originalValue;
+		goal = originalValue;
 
 		instances.add(this);
 	}
