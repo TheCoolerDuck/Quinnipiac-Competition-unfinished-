@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="Quinnipiac-Competition:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Quinnipiac_Competition_jar</output-path>
+    <root id="archive" name="Quinnipiac-Competition.jar">
+      <element id="module-output" name="Quinnipiac-Competition" />
+    </root>
+  </artifact>
+</component>

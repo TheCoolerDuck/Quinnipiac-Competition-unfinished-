@@ -1,0 +1,23 @@
+
+
+Version:	3.50
+CmdLine:	C:\Users\pjsol\source\repos\Quinnipiac-Competition\exe.exe --l4j-debug
+JNI:		No
+WOW64:		Yes
+Working dir:	C:\Users\pjsol\source\repos\Quinnipiac-Competition\.
+Requires JDK:	No
+Requires 64-Bit: No
+Java min ver:	
+Java max ver:	
+Substitute:	JAVA_HOME = 
+Substitute:	PATH = C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\libnvvp;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.3\bin\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.3\bin;D:\Oculus\Support\oculus-runtime;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\NVIDIA Corporation\Nsight Compute 2022.4.0\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\Git LFS;C:\Program Files\WSL\;C:\ffmpeg-2025-11-17-git-e94439e49b-full_build\ffmpeg-2025-11-17-git-e94439e49b-full_build\bin;C:\Users\pjsol\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\pjsol\AppData\Local\GitHubDesktop\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\bin;C:\Users\pjsol\AppData\Local\Programs\Microsoft VS Code\bin\copilot-shim;C:\Program Files (x86)\Java\jre1.8.0_511\bin
+JRE paths:	;C:\Program Files (x86)\Common Files\Oracle\Java\java8path;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\libnvvp;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.3\bin\x64;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.3\bin;D:\Oculus\Support\oculus-runtime;C:\Windows\system32;C:\Windows;C:\Windows\System32\Wbem;C:\Windows\System32\WindowsPowerShell\v1.0\;C:\Windows\System32\OpenSSH\;C:\Program Files (x86)\NVIDIA Corporation\PhysX\Common;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\dotnet\;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files (x86)\Windows Kits\10\Windows Performance Toolkit\;C:\Program Files\NVIDIA Corporation\Nsight Compute 2022.4.0\;C:\Program Files\NVIDIA Corporation\NVIDIA App\NvDLISR;C:\Program Files\Git\cmd;C:\Program Files\Git LFS;C:\Program Files\WSL\;C:\ffmpeg-2025-11-17-git-e94439e49b-full_build\ffmpeg-2025-11-17-git-e94439e49b-full_build\bin;C:\Users\pjsol\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\pjsol\AppData\Local\GitHubDesktop\bin;C:\Program Files\JetBrains\IntelliJ IDEA 2025.3.3\bin;C:\Users\pjsol\AppData\Local\Programs\Microsoft VS Code\bin\copilot-shim;C:\Program Files (x86)\Java\jre1.8.0_511\bin
+Check launcher:	C:\Program Files (x86)\Common Files\Oracle\Java\java8path\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files (x86)\Common Files\Oracle\Java\javapath\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v12.0\libnvvp\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.3\bin\x64\bin\javaw.exe (not found)
+Check launcher:	C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v13.3\bin\javaw.exe (not found)
+Check launcher:	D:\Oculus\Support\oculus-runtime\bin\javaw.exe (not found)
+Check launcher:	C:\Windows\system32\bin\javaw.exe (not found)
+Check launcher:	C:\Windows\bin\javaw.exe (not fo
